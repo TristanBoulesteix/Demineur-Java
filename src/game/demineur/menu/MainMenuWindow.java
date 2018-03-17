@@ -17,6 +17,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import game.demineur.ingame.LaunchGame;
+import game.demineur.popup.Popup;
+import game.demineur.utils.GameConstants;
 import game.demineur.utils.ImagesSettings;
 import game.demineur.utils.Path;
 
@@ -26,6 +29,8 @@ public class MainMenuWindow {
 	private final Action action = new SwingAction();
 	private final Action action_1 = new SwingAction_1();
 	private final Action action_2 = new SwingAction_2();
+	private final Action action_3 = new SwingAction_3();
+	private final Action action_4 = new SwingAction_4();
 
 	public JFrame getFrmMenu() {
 		return frmMenu;
@@ -75,6 +80,7 @@ public class MainMenuWindow {
 		menuBar.add(mnDmineur);
 
 		JMenuItem mntmParamtres = new JMenuItem("Param\u00E8tres");
+		mntmParamtres.setAction(action_4);
 		mnDmineur.add(mntmParamtres);
 
 		JMenuItem mntmQuitter = new JMenuItem("Quitter le jeu");
@@ -84,6 +90,7 @@ public class MainMenuWindow {
 		menuBar.add(mnAide);
 
 		JMenuItem mntmRglesDuJeu = new JMenuItem("R\u00E8gles du jeu");
+		mntmRglesDuJeu.setAction(action_3);
 		mnAide.add(mntmRglesDuJeu);
 
 		JMenu mnPropos = new JMenu("\u00C1 propos");
@@ -97,7 +104,8 @@ public class MainMenuWindow {
 		mntmChangelog.setAction(action_2);
 		mnPropos.add(mntmChangelog);
 
-		JMenuItem mntmVersion = new JMenuItem("Version");
+		JMenuItem mntmVersion = new JMenuItem("Version " + GameConstants.VERNUM);
+		mntmVersion.setEnabled(false);
 		mnPropos.add(mntmVersion);
 		frmMenu.getContentPane().setLayout(new BorderLayout(0, 0));
 
@@ -138,6 +146,10 @@ public class MainMenuWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			String gridSize = Popup.askForGridSize();
+			frmMenu.dispose();
+			LaunchGame game = new LaunchGame();
+			game.newGame(gridSize);
 		}
 	}
 
@@ -163,6 +175,31 @@ public class MainMenuWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+		}
+	}
+
+	@SuppressWarnings("serial")
+	private class SwingAction_3 extends AbstractAction {
+		public SwingAction_3() {
+			putValue(NAME, "Règles du jeu");
+			putValue(SHORT_DESCRIPTION, "Afficher les règles du jeu");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		}
+	}
+
+	@SuppressWarnings("serial")
+	private class SwingAction_4 extends AbstractAction {
+		public SwingAction_4() {
+			putValue(NAME, "Paramètres");
+			putValue(SHORT_DESCRIPTION, "Options du jeu");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
 		}
 	}
 }
