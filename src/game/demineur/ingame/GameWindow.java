@@ -77,11 +77,28 @@ public class GameWindow {
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		getFrame().getContentPane().setLayout(gridBagLayout);
 
-		CarreEmpty cube1 = new CarreEmpty(Case.CARRE);
-		GridBagConstraints gbc_label1 = new GridBagConstraints();
-		gbc_label1.gridx = 1;
-		gbc_label1.gridy = 1;
-		getFrame().getContentPane().add(cube1, gbc_label1);
+		addCubes(size);
+	}
+
+	private void addCubes(int size) {
+		if (size == 9) {
+			for (int i = 1; i < 9; i++) {
+				CarreEmpty cube = new CarreEmpty(Case.CARRE);
+				GridBagConstraints gbc_label1 = new GridBagConstraints();
+				gbc_label1.gridx = i;
+				gbc_label1.gridy = 1;
+				getFrame().getContentPane().add(cube, gbc_label1);
+
+				for (int j = 2; j < 9; j++) {
+					CarreEmpty cubeLargeur = new CarreEmpty(Case.CARRE);
+					GridBagConstraints gbc_label = new GridBagConstraints();
+					gbc_label.gridx = i;
+					gbc_label.gridy = j;
+					getFrame().getContentPane().add(cubeLargeur, gbc_label1);
+				}
+
+			}
+		}
 	}
 
 }

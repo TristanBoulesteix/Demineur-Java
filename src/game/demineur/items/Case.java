@@ -11,13 +11,14 @@ public class Case extends JLabel {
 	public static final int CARRE = 300;
 
 	protected int state = CARRE;
-	protected int statusGiven;
+	protected int originalStatus;
+	protected int currentStatus;
 
 	private final Dimension size = new Dimension(25, 25);
 
 	public Case(int status) {
 		this.setPreferredSize(size);
-		setState(status);
+		originalStatus = status;
 	}
 
 	public int getState() {
@@ -28,12 +29,16 @@ public class Case extends JLabel {
 		this.state = state;
 	}
 
-	public int getStatusGiven() {
-		return statusGiven;
+	public int getOriginalStatus() {
+		return originalStatus;
 	}
 
-	public void setStatusGiven(int statusGiven) {
-		this.statusGiven = statusGiven;
+	public int getCurrentStatus() {
+		return currentStatus;
+	}
+
+	public void setCurrentStatus(int currentStatus) {
+		this.currentStatus = currentStatus;
 	}
 
 }
