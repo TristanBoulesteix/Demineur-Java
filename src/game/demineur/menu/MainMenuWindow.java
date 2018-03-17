@@ -113,7 +113,7 @@ public class MainMenuWindow {
 		btnDmarrerLaPartie.setAction(action);
 		frmMenu.getContentPane().add(btnDmarrerLaPartie, BorderLayout.SOUTH);
 
-		JLabel lblNewLabel = new JLabel("");
+		JLabel lblNewLabel = new JLabel();
 		ImagesSettings resizePicture = new ImagesSettings();
 		lblNewLabel = resizePicture.displayImage(lblNewLabel, Path.MENU_PICTURE, 280, 400);
 		frmMenu.getContentPane().add(lblNewLabel, BorderLayout.EAST);

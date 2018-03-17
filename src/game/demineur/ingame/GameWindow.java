@@ -30,7 +30,7 @@ public class GameWindow {
 			@Override
 			public void run() {
 				try {
-					GameWindow window = new GameWindow();
+					GameWindow window = new GameWindow(9);
 					window.getFrame().setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -41,15 +41,19 @@ public class GameWindow {
 
 	/**
 	 * Create the application.
+	 * 
+	 * @param size
 	 */
-	public GameWindow() {
-		initialize();
+	public GameWindow(int size) {
+		initialize(size);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
+	 * 
+	 * @param size
 	 */
-	void initialize() {
+	void initialize(int size) {
 		setFrame(new JFrame());
 		// getFrame().setBounds(100, 100, 800, 600);
 		getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

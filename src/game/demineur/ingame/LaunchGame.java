@@ -2,7 +2,7 @@ package game.demineur.ingame;
 
 public class LaunchGame {
 	public void newGame(String gridSize) {
-		int size;
+		int size = 9;
 
 		if (gridSize.equals("9x9")) {
 			size = 9;
@@ -12,7 +12,7 @@ public class LaunchGame {
 			size = 30;
 		}
 
-		GameWindow window = new GameWindow();
+		GameWindow window = new GameWindow(size);
 		window.getFrame().setVisible(true);
 	}
 }
