@@ -3,16 +3,19 @@ package game.demineur.menu;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JTextPane;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import game.demineur.utils.ImagesSettings;
 import game.demineur.utils.Path;
@@ -20,6 +23,9 @@ import game.demineur.utils.Path;
 public class MainMenuWindow {
 
 	private JFrame frmMenu;
+	private final Action action = new SwingAction();
+	private final Action action_1 = new SwingAction_1();
+	private final Action action_2 = new SwingAction_2();
 
 	public JFrame getFrmMenu() {
 		return frmMenu;
@@ -68,20 +74,40 @@ public class MainMenuWindow {
 		JMenu mnDmineur = new JMenu("D\u00E9mineur");
 		menuBar.add(mnDmineur);
 
+		JMenuItem mntmParamtres = new JMenuItem("Param\u00E8tres");
+		mnDmineur.add(mntmParamtres);
+
+		JMenuItem mntmQuitter = new JMenuItem("Quitter le jeu");
+		mnDmineur.add(mntmQuitter);
+
 		JMenu mnAide = new JMenu("Aide");
 		menuBar.add(mnAide);
 
+		JMenuItem mntmRglesDuJeu = new JMenuItem("R\u00E8gles du jeu");
+		mnAide.add(mntmRglesDuJeu);
+
 		JMenu mnPropos = new JMenu("\u00C1 propos");
 		menuBar.add(mnPropos);
+
+		JMenuItem mntmProposDu = new JMenuItem("\u00C1 propos du d\u00E9veloppeur");
+		mntmProposDu.setAction(action_1);
+		mnPropos.add(mntmProposDu);
+
+		JMenuItem mntmChangelog = new JMenuItem("Changelog");
+		mntmChangelog.setAction(action_2);
+		mnPropos.add(mntmChangelog);
+
+		JMenuItem mntmVersion = new JMenuItem("Version");
+		mnPropos.add(mntmVersion);
 		frmMenu.getContentPane().setLayout(new BorderLayout(0, 0));
 
 		JButton btnDmarrerLaPartie = new JButton("D\u00E9marrer la partie");
+		btnDmarrerLaPartie.setAction(action);
 		frmMenu.getContentPane().add(btnDmarrerLaPartie, BorderLayout.SOUTH);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setPreferredSize(new Dimension(120, 300));
 		ImagesSettings resizePicture = new ImagesSettings();
-		lblNewLabel = resizePicture.displayImage(lblNewLabel, Path.MENU_PICTURE);
+		lblNewLabel = resizePicture.displayImage(lblNewLabel, Path.MENU_PICTURE, 280, 400);
 		frmMenu.getContentPane().add(lblNewLabel, BorderLayout.EAST);
 
 		JEditorPane txtpnPane = new JEditorPane();
@@ -91,13 +117,52 @@ public class MainMenuWindow {
 		txtpnPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		txtpnPane.setText(
 				"Bienvenue dans le jeu du démineur !\n\nPour commencer une partie cliquez sur le bouton ci-dessous.");
-		frmMenu.getContentPane().add(txtpnPane, BorderLayout.WEST);
+		frmMenu.getContentPane().add(txtpnPane, BorderLayout.CENTER);
 
-		JTextPane txtpnJeuDuDmineur = new JTextPane();
+		JEditorPane txtpnJeuDuDmineur = new JEditorPane();
+		txtpnJeuDuDmineur.setContentType("text/html");
+		txtpnJeuDuDmineur.setDisabledTextColor(Color.BLACK);
+		txtpnJeuDuDmineur.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		txtpnJeuDuDmineur.setEditable(false);
 		txtpnJeuDuDmineur.setEnabled(false);
-		txtpnJeuDuDmineur.setText("Jeu du démineur");
+		txtpnJeuDuDmineur.setText("<html><center>Menu pricipal</center></html>");
 		frmMenu.getContentPane().add(txtpnJeuDuDmineur, BorderLayout.NORTH);
 	}
 
+	@SuppressWarnings("serial")
+	private class SwingAction extends AbstractAction {
+		public SwingAction() {
+			putValue(NAME, "Démarrer la partie");
+			putValue(SHORT_DESCRIPTION, "Cliquez ici pour commencer une nouvelle partie.");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		}
+	}
+
+	@SuppressWarnings("serial")
+	private class SwingAction_1 extends AbstractAction {
+		public SwingAction_1() {
+			putValue(NAME, "A propos du développeur");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JOptionPane.showMessageDialog(null, "Tristan BOULESTEIX\nÉtudiant à l'Exia.CESI", "About me",
+					JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+
+	@SuppressWarnings("serial")
+	private class SwingAction_2 extends AbstractAction {
+		public SwingAction_2() {
+			putValue(NAME, "Changelog");
+			putValue(SHORT_DESCRIPTION, "Voir les nouveautés");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		}
+	}
 }
