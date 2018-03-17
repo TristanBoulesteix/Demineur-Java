@@ -4,44 +4,36 @@ import java.awt.Dimension;
 
 import javax.swing.JLabel;
 
-import game.demineur.utils.ImagesSettings;
-import game.demineur.utils.Path;
+@SuppressWarnings("serial")
+public class Case extends JLabel {
+	public static final int BOMB = 100;
+	public static final int FLAG = 200;
+	public static final int CARRE = 300;
 
-public class Case {
-	protected JLabel cube = new JLabel();
-
-	public static final int BOMB = 1;
-	public static final int FLAG = 2;
-	public static final int CARRE = 3;
+	protected int state = CARRE;
+	protected int statusGiven;
 
 	private final Dimension size = new Dimension(25, 25);
 
 	public Case(int status) {
-		cube.setPreferredSize(size);
-		addCarreIcon();
-
+		this.setPreferredSize(size);
+		setState(status);
 	}
 
-	private void addIcon(int status) {
-		if (status == Case.BOMB) {
-			addBombIcon();
-		} else if (status == Case.FLAG) {
-			addFlagIcon();
-		}
+	public int getState() {
+		return state;
 	}
 
-	private void addBombIcon() {
-		ImagesSettings resizePicture = new ImagesSettings();
-		cube = resizePicture.displayImage(cube, Path.BOMB_PICTURE);
+	public void setState(int state) {
+		this.state = state;
 	}
 
-	private void addFlagIcon() {
-		ImagesSettings resizePicture = new ImagesSettings();
-		cube = resizePicture.displayImage(cube, Path.FLAG_PICTURE);
+	public int getStatusGiven() {
+		return statusGiven;
 	}
 
-	private void addCarreIcon() {
-		ImagesSettings resizePicture = new ImagesSettings();
-		cube = resizePicture.displayImage(cube, Path.FLAG_PICTURE);
+	public void setStatusGiven(int statusGiven) {
+		this.statusGiven = statusGiven;
 	}
+
 }
