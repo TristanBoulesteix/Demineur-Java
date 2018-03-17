@@ -147,9 +147,12 @@ public class MainMenuWindow {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String gridSize = Popup.askForGridSize();
-			frmMenu.dispose();
-			LaunchGame game = new LaunchGame();
-			game.newGame(gridSize);
+
+			if (gridSize != null) {
+				frmMenu.dispose();
+				LaunchGame game = new LaunchGame();
+				game.newGame(gridSize);
+			}
 		}
 	}
 

@@ -20,7 +20,9 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-bin/Images/MenuImage/Image menu démineur.jpg
-bin/Images/GameItems/Bombe.png
-bin/pictures/menuImage/Image_menu_démineur.jpg
+bin/pictures/menuImage/*
+bin/pictures/gameItems/Blue_Cube.jpg
 bin/pictures/gameItems/Bombe.png
+bin/pictures/gameItems/Green_Cube.jpg
+bin/pictures/gameItems/Grey_Cube.jpg
+bin/pictures/gameItems/Red_Cube.jpg
