@@ -5,15 +5,24 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.ArrayList;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import game.demineur.items.CarreEmpty;
+import game.demineur.items.Case;
+import game.demineur.items.CaseItem;
+import game.demineur.utils.GameConstants;
 
 public class GameWindow {
 	public final int TAILLE_X = 800;
@@ -21,6 +30,7 @@ public class GameWindow {
 	public final Dimension TAILLE_DEFAULT = new Dimension(TAILLE_X, TAILLE_Y);
 
 	private JFrame frame;
+	private final Action action = new SwingAction();
 
 	public JFrame getFrame() {
 		return frame;
@@ -93,6 +103,17 @@ public class GameWindow {
 		JMenu mnAPropos = new JMenu("A propos");
 		menuBar.add(mnAPropos);
 
+		JMenuItem mntmAProposDu = new JMenuItem("A propos du développeur");
+		mntmAProposDu.setAction(action);
+		mnAPropos.add(mntmAProposDu);
+
+		JMenuItem mntmChangelog = new JMenuItem("Changelog");
+		mnAPropos.add(mntmChangelog);
+
+		JMenuItem mntmVersion = new JMenuItem("Version " + GameConstants.VERNUM);
+		mntmVersion.setEnabled(false);
+		mnAPropos.add(mntmVersion);
+
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 420, 0 };
 		gridBagLayout.rowHeights = new int[] { 0, 0 };
@@ -103,7 +124,7 @@ public class GameWindow {
 		JPanel gamePane = new JPanel();
 		gamePane.setPreferredSize(new Dimension(200, 400));
 		GridBagConstraints cGamePane = new GridBagConstraints();
-		cGamePane.fill = GridBagConstraints.BOTH;
+		// cGamePane.fill = GridBagConstraints.BOTH;
 		cGamePane.gridx = 0;
 		cGamePane.gridy = 0;
 		frame.getContentPane().add(gamePane, cGamePane);
@@ -128,25 +149,98 @@ public class GameWindow {
 		gridBagLayout1.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
 		gamePane.setLayout(gridBagLayout1);
 
-		CarreEmpty a1 = new CarreEmpty(CarreEmpty.CARRE);
-		GridBagConstraints cA1 = new GridBagConstraints();
-		cA1.gridx = 0;
-		cA1.gridy = 0;
-		cA1.fill = GridBagConstraints.HORIZONTAL;
-		gamePane.add(a1, cA1);
+		Case aX;
+
+		ArrayList<Integer> arrayCases = chooseRandomPlaceToBombs(9);
 
 		for (int i = 0; i < 9; i++) {
-			CarreEmpty aX = new CarreEmpty(CarreEmpty.CARRE);
-			GridBagConstraints cAX = new GridBagConstraints();
-			cAX.gridx = GridBagConstraints.RELATIVE;
-			cAX.gridy = 0;
-			cAX.fill = GridBagConstraints.HORIZONTAL;
-			gamePane.add(aX, cAX);
-		}
+			for (int j = 0; j < 9; j++) {
+				if (isABomb(i, j, arrayCases)) {
+					aX = new Case(CaseItem.EXPLOSIVE);
+				} else {
+					aX = new Case(CaseItem.SAFE);
+				}
 
-		for (int i = 0; i < 8; i++) {
-
+				aX.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				GridBagConstraints cAX = new GridBagConstraints();
+				cAX.gridx = j;
+				cAX.gridy = i;
+				cAX.fill = GridBagConstraints.BOTH;
+				gamePane.add(aX, cAX);
+			}
 		}
 	}
 
+	public boolean isABomb(int dizaine, int unites, ArrayList<Integer> arrayToCheck) {
+		boolean isBomb = false;
+
+		StringBuilder temp = new StringBuilder();
+		temp.append(dizaine);
+		temp.append(unites);
+
+		String temporaryString = temp.toString();
+		int coordonnees = Integer.parseInt(temporaryString);
+
+		for (int i = 0; i < arrayToCheck.size(); i++) {
+			if (arrayToCheck.get(i) == coordonnees) {
+				isBomb = true;
+				return isBomb;
+			}
+		}
+
+		return isBomb;
+	}
+
+	public ArrayList<Integer> chooseRandomPlaceToBombs(int maxSize) {
+		ArrayList<Integer> arrayOfInt = new ArrayList<>();
+
+		if (maxSize == 9) {
+			int bombToPlace = 10;
+
+			for (int i = 1; i <= bombToPlace; i++) {
+				int num = randomBetween(0, 81);
+
+				if (arrayOfInt.size() == 0) {
+					arrayOfInt.add(num);
+				} else if (isAlreadyExistant(arrayOfInt, num)) {
+					i--;
+				} else {
+					arrayOfInt.add(num);
+				}
+			}
+		}
+
+		return arrayOfInt;
+	}
+
+	public int randomBetween(int min, int max) {
+		int randomNumber = (int) (Math.random() * (max - min));
+		return randomNumber;
+	}
+
+	public boolean isAlreadyExistant(ArrayList<Integer> list, int numberToCheck) {
+		boolean exist = false;
+
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i) == numberToCheck) {
+				exist = false;
+				break;
+			}
+		}
+
+		return exist;
+	}
+
+	@SuppressWarnings("serial")
+	private class SwingAction extends AbstractAction {
+		public SwingAction() {
+			putValue(NAME, "A propos du développeur");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JOptionPane.showMessageDialog(null, "Tristan BOULESTEIX\nÉtudiant à l'Exia.CESI", "About me",
+					JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
 }

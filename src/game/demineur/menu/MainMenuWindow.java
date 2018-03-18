@@ -93,7 +93,7 @@ public class MainMenuWindow {
 		mntmRglesDuJeu.setAction(action_3);
 		mnAide.add(mntmRglesDuJeu);
 
-		JMenu mnPropos = new JMenu("\u00C1 propos");
+		JMenu mnPropos = new JMenu("A propos");
 		menuBar.add(mnPropos);
 
 		JMenuItem mntmProposDu = new JMenuItem("\u00C1 propos du d\u00E9veloppeur");
