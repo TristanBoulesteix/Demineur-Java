@@ -5,7 +5,7 @@ import java.awt.Dimension;
 import javax.swing.JLabel;
 
 @SuppressWarnings("serial")
-public class CaseItem extends JLabel {
+abstract class CaseItem extends JLabel {
 	public static final int EXPLOSIVE = 100;
 	public static final int SAFE = 200;
 

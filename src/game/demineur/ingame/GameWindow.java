@@ -21,7 +21,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import game.demineur.items.Case;
-import game.demineur.items.CaseItem;
 import game.demineur.utils.GameConstants;
 
 public class GameWindow {
@@ -124,7 +123,6 @@ public class GameWindow {
 		JPanel gamePane = new JPanel();
 		gamePane.setPreferredSize(new Dimension(200, 400));
 		GridBagConstraints cGamePane = new GridBagConstraints();
-		// cGamePane.fill = GridBagConstraints.BOTH;
 		cGamePane.gridx = 0;
 		cGamePane.gridy = 0;
 		frame.getContentPane().add(gamePane, cGamePane);
@@ -156,9 +154,9 @@ public class GameWindow {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				if (isABomb(i, j, arrayCases)) {
-					aX = new Case(CaseItem.EXPLOSIVE);
+					aX = new Case(Case.EXPLOSIVE);
 				} else {
-					aX = new Case(CaseItem.SAFE);
+					aX = new Case(Case.SAFE);
 				}
 
 				aX.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -166,6 +164,7 @@ public class GameWindow {
 				cAX.gridx = j;
 				cAX.gridy = i;
 				cAX.fill = GridBagConstraints.BOTH;
+
 				gamePane.add(aX, cAX);
 			}
 		}

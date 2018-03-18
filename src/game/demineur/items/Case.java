@@ -1,5 +1,8 @@
 package game.demineur.items;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import game.demineur.utils.ImagesSettings;
 import game.demineur.utils.Path;
 
@@ -9,6 +12,16 @@ public class Case extends CaseItem {
 		super(status);
 		ImagesSettings resize = new ImagesSettings();
 		resize.displayImage(this, Path.DEFAULT_CUBE_PICTURE, 25, 25);
+
+		this.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (getState() == CaseItem.EXPLOSIVE) {
+
+				}
+			}
+		});
 	}
 
 }
