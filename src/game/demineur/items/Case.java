@@ -5,12 +5,11 @@ import java.awt.event.MouseEvent;
 
 import game.demineur.utils.ImagesSettings;
 import game.demineur.utils.Path;
-import game.library.Coordonnees;
 
 @SuppressWarnings("serial")
 public class Case extends CaseItem {
-	public Case(int state, Coordonnees[] tabVoisins) {
-		super(state, tabVoisins);
+	public Case(int state, int neighboor) {
+		super(state, neighboor);
 		setStatus(CaseItem.CASE);
 		ImagesSettings resize = new ImagesSettings();
 		resize.displayImage(this, Path.DEFAULT_CUBE_PICTURE, 25, 25);
@@ -24,6 +23,8 @@ public class Case extends CaseItem {
 				if (getState() == CaseItem.EXPLOSIVE) {
 					setStatus(CaseItem.BOMB);
 					changeToBomb();
+				} else if (getState() == CaseItem.SAFE) {
+					System.out.println(getNumberOfExplosiveNeighboor());
 				}
 			}
 		});

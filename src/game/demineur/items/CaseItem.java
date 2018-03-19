@@ -6,7 +6,6 @@ import javax.swing.JLabel;
 
 import game.demineur.utils.ImagesSettings;
 import game.demineur.utils.Path;
-import game.library.Coordonnees;
 
 @SuppressWarnings("serial")
 abstract class CaseItem extends JLabel {
@@ -34,16 +33,19 @@ abstract class CaseItem extends JLabel {
 	 */
 	protected int status;
 
+	protected int numberOfExplosiveNeighboor;
+
 	private final Dimension DIMENSION = new Dimension(25, 25);
 
 	/**
 	 * @param state
-	 * @param les
-	 *            cinq coodonnées des Cases voisines
+	 * @param nombre
+	 *            de voisins
 	 */
-	public CaseItem(int state, Coordonnees[] tabvoisins) {
+	public CaseItem(int state, int neighboors) {
 		this.setPreferredSize(DIMENSION);
 		setState(state);
+		setNumberOfExplosiveNeighboor(neighboors);
 	}
 
 	protected void changeToBomb() {
@@ -94,7 +96,23 @@ abstract class CaseItem extends JLabel {
 		this.status = status;
 	}
 
-	// Coordonnees c0, Coordonnees c1, Coordonnees c2, Coordonnees c3, Coordonnees
-	// c4,
-	// Coordonnees c5, Coordonnees c6, Coordonnees c7
+	/**
+	 * The number of bomb next to the case
+	 * 
+	 * @author Tristan BOULESTEIX
+	 */
+	public int getNumberOfExplosiveNeighboor() {
+		return numberOfExplosiveNeighboor;
+	}
+
+	/**
+	 * This method is private. Do NOT change manually this value !
+	 * 
+	 * @param number
+	 *            of bombs
+	 * @author Tristan BOULESTEIX
+	 */
+	protected void setNumberOfExplosiveNeighboor(int numberOfExplosiveNeighboor) {
+		this.numberOfExplosiveNeighboor = numberOfExplosiveNeighboor;
+	}
 }
