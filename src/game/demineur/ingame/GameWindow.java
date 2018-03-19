@@ -87,7 +87,7 @@ public class GameWindow {
 				}
 			}
 		});
-
+		getFrame().pack();
 		getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JMenuBar menuBar = new JMenuBar();
@@ -125,6 +125,8 @@ public class GameWindow {
 		GridBagConstraints cGamePane = new GridBagConstraints();
 		cGamePane.gridx = 0;
 		cGamePane.gridy = 0;
+		cGamePane.weightx = 225;
+		cGamePane.weighty = 225;
 		frame.getContentPane().add(gamePane, cGamePane);
 
 		JPanel timePanel = new JPanel();
@@ -163,6 +165,8 @@ public class GameWindow {
 				GridBagConstraints cAX = new GridBagConstraints();
 				cAX.gridx = j;
 				cAX.gridy = i;
+				cAX.weightx = 25;
+				cAX.weighty = 25;
 				cAX.fill = GridBagConstraints.BOTH;
 
 				gamePane.add(aX, cAX);
