@@ -10,7 +10,7 @@ import game.demineur.utils.Path;
 public class Case extends CaseItem {
 	public Case(int status) {
 		super(status);
-		setState(CaseItem.CASE);
+		setStatus(CaseItem.CASE);
 		ImagesSettings resize = new ImagesSettings();
 		resize.displayImage(this, Path.DEFAULT_CUBE_PICTURE, 25, 25);
 
@@ -18,8 +18,10 @@ public class Case extends CaseItem {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				System.out.println(getState());
+
 				if (getState() == CaseItem.EXPLOSIVE) {
-					setState(CaseItem.BOMB);
+					setStatus(CaseItem.BOMB);
 					changeToBomb();
 				}
 			}
