@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 
 import game.demineur.items.Case;
 import game.demineur.utils.GameConstants;
+import game.library.Coordonnees;
 
 public class GameWindow {
 	public final int TAILLE_X = 800;
@@ -155,10 +156,12 @@ public class GameWindow {
 
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
+				Coordonnees[] tabCoor = generateCoordonneesVoisines(i, j);
+
 				if (isABomb(i, j, arrayCases)) {
-					aX = new Case(Case.EXPLOSIVE);
+					aX = new Case(Case.EXPLOSIVE, tabCoor);
 				} else {
-					aX = new Case(Case.SAFE);
+					aX = new Case(Case.SAFE, tabCoor);
 				}
 
 				aX.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -172,6 +175,36 @@ public class GameWindow {
 				gamePane.add(aX, cAX);
 			}
 		}
+	}
+
+	public Coordonnees[] generateCoordonneesVoisines(int i, int j) {
+		Coordonnees[] tableauCoor = new Coordonnees[8];
+
+		Coordonnees topLeft = new Coordonnees(i - 1, j - 1);
+		tableauCoor[0] = topLeft;
+
+		Coordonnees topMiddle = new Coordonnees(i, j - 1);
+		tableauCoor[1] = topMiddle;
+
+		Coordonnees topRight = new Coordonnees(i + 1, j - 1);
+		tableauCoor[2] = topRight;
+
+		Coordonnees middleLeft = new Coordonnees(i - 1, j);
+		tableauCoor[3] = middleLeft;
+
+		Coordonnees middleRight = new Coordonnees(i + 1, j);
+		tableauCoor[4] = middleRight;
+
+		Coordonnees bottomLeft = new Coordonnees(i - 1, j + 1);
+		tableauCoor[5] = bottomLeft;
+
+		Coordonnees bottomMiddle = new Coordonnees(i, j + 1);
+		tableauCoor[6] = bottomMiddle;
+
+		Coordonnees bottomRight = new Coordonnees(i + 1, j + 1);
+		tableauCoor[7] = bottomRight;
+
+		return tableauCoor;
 	}
 
 	public boolean isABomb(int dizaine, int unites, ArrayList<Integer> arrayToCheck) {

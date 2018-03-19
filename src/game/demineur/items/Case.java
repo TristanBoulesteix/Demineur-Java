@@ -5,11 +5,12 @@ import java.awt.event.MouseEvent;
 
 import game.demineur.utils.ImagesSettings;
 import game.demineur.utils.Path;
+import game.library.Coordonnees;
 
 @SuppressWarnings("serial")
 public class Case extends CaseItem {
-	public Case(int status) {
-		super(status);
+	public Case(int state, Coordonnees[] tabVoisins) {
+		super(state, tabVoisins);
 		setStatus(CaseItem.CASE);
 		ImagesSettings resize = new ImagesSettings();
 		resize.displayImage(this, Path.DEFAULT_CUBE_PICTURE, 25, 25);

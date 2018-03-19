@@ -6,6 +6,7 @@ import javax.swing.JLabel;
 
 import game.demineur.utils.ImagesSettings;
 import game.demineur.utils.Path;
+import game.library.Coordonnees;
 
 @SuppressWarnings("serial")
 abstract class CaseItem extends JLabel {
@@ -15,6 +16,7 @@ abstract class CaseItem extends JLabel {
 	public static final int CASE = -100;
 	public static final int BOMB = -200;
 	public static final int FLAG = -300;
+	public static final int NUMBER = -400;
 
 	/**
 	 * The current state of the item. It could be an {@code this.EXPLOSIVE} or a
@@ -34,7 +36,12 @@ abstract class CaseItem extends JLabel {
 
 	private final Dimension DIMENSION = new Dimension(25, 25);
 
-	public CaseItem(int state) {
+	/**
+	 * @param state
+	 * @param les
+	 *            cinq coodonnées des Cases voisines
+	 */
+	public CaseItem(int state, Coordonnees[] tabvoisins) {
 		this.setPreferredSize(DIMENSION);
 		setState(state);
 	}
@@ -86,4 +93,8 @@ abstract class CaseItem extends JLabel {
 	protected void setStatus(int status) {
 		this.status = status;
 	}
+
+	// Coordonnees c0, Coordonnees c1, Coordonnees c2, Coordonnees c3, Coordonnees
+	// c4,
+	// Coordonnees c5, Coordonnees c6, Coordonnees c7
 }
