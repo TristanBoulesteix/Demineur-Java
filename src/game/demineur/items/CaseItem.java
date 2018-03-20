@@ -86,6 +86,7 @@ abstract class CaseItem extends JLabel {
 	 */
 	public void changeToNumber(int numberOfNeighboor) {
 		this.setIcon(null);
+		this.setMinimumSize(DIMENSION);
 
 		if (numberOfNeighboor == 0) {
 			this.setOpaque(true);

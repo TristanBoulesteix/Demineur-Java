@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -38,6 +39,7 @@ public class MainMenuWindow {
 
 	public void setFrmMenu(JFrame frmMenu) {
 		this.frmMenu = frmMenu;
+		frmMenu.setIconImage(Toolkit.getDefaultToolkit().getImage(MainMenuWindow.class.getResource(Path.MENU_PICTURE)));
 	}
 
 	/**
@@ -202,7 +204,8 @@ public class MainMenuWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
+			SettingPopup parametre = new SettingPopup(null, "Paramètre", true);
+			parametre.showSettingPopup();
 		}
 	}
 }

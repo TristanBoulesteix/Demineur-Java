@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 
 import game.demineur.items.Case;
 import game.demineur.utils.GameConstants;
+import game.demineur.utils.Path;
 import game.library.Coordonnees;
 import game.library.MineUtils;
 
@@ -41,8 +42,7 @@ public class GameWindow {
 	public void setFrame(JFrame frame) {
 		this.frmDmineur = frame;
 		frmDmineur.setTitle("Démineur");
-		frame.setIconImage(Toolkit.getDefaultToolkit()
-				.getImage(GameWindow.class.getResource("/pictures/menuImage/Image_menu_démineur.jpg")));
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(GameWindow.class.getResource(Path.MENU_PICTURE)));
 	}
 
 	/**
@@ -127,7 +127,9 @@ public class GameWindow {
 		frmDmineur.getContentPane().setLayout(gridBagLayout);
 
 		JPanel gamePane = new JPanel();
-		gamePane.setPreferredSize(new Dimension(200, 400));
+		Dimension d = new Dimension(200, 400);
+		gamePane.setPreferredSize(d);
+		gamePane.setMaximumSize(d);
 		GridBagConstraints cGamePane = new GridBagConstraints();
 		cGamePane.gridx = 0;
 		cGamePane.gridy = 0;
