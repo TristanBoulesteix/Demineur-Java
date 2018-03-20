@@ -1,12 +1,16 @@
 package game.demineur.items;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import game.demineur.data.BooleanChangeTest;
 import game.demineur.utils.ImagesSettings;
 import game.demineur.utils.Path;
+import game.library.Coordonnees;
 
 @SuppressWarnings("serial")
 abstract class CaseItem extends JLabel {
@@ -17,6 +21,8 @@ abstract class CaseItem extends JLabel {
 	public static final int BOMB = -200;
 	public static final int FLAG = -300;
 	public static final int NUMBER = -400;
+
+	private final Dimension DIMENSION = new Dimension(25, 25);
 
 	/**
 	 * The current state of the item. It could be an {@code this.EXPLOSIVE} or a
@@ -36,30 +42,56 @@ abstract class CaseItem extends JLabel {
 
 	protected int numberOfExplosiveNeighboor;
 
-	private final Dimension DIMENSION = new Dimension(25, 25);
+	protected Coordonnees position;
+
+	protected ArrayList<Integer> listOfAllBombs;
+
+	protected BooleanChangeTest booom = new BooleanChangeTest();
 
 	/**
 	 * @param state
+	 * @param listOfAllBombs
 	 * @param nombre
 	 *            de voisins
 	 */
-	public CaseItem(int state, int neighboors) {
+	public CaseItem(int state, int neighboors, Coordonnees position, ArrayList<Integer> listOfAllBombs) {
 		this.setPreferredSize(DIMENSION);
-		setState(state);
+		this.state = state;
+		this.position = position;
+		this.listOfAllBombs = listOfAllBombs;
 		setNumberOfExplosiveNeighboor(neighboors);
 	}
 
+	/**
+	 * Change a case to a bomb
+	 */
 	public void changeToBomb() {
 		ImagesSettings setImage = new ImagesSettings();
 		setImage.displayImage(this, Path.BOMB_PICTURE, 25, 25);
 	}
 
+	public void changeToFlag() {
+		ImagesSettings setImage = new ImagesSettings();
+		setImage.displayImage(this, Path.FLAG_PICTURE, 25, 25);
+	}
+
+	/**
+	 * Change a case to a number with number of neighboor
+	 * 
+	 * @param numberOfNeighboor
+	 */
 	public void changeToNumber(int numberOfNeighboor) {
 		this.setIcon(null);
-		this.setHorizontalAlignment(SwingConstants.CENTER);
-		this.setVerticalAlignment(SwingConstants.CENTER);
-		String number = String.valueOf(numberOfNeighboor);
-		this.setText(number);
+
+		if (numberOfNeighboor == 0) {
+			this.setOpaque(true);
+			this.setBackground(new Color(224, 224, 224));
+		} else if (numberOfNeighboor > 0) {
+			this.setHorizontalAlignment(SwingConstants.CENTER);
+			this.setVerticalAlignment(SwingConstants.CENTER);
+			String number = String.valueOf(numberOfNeighboor);
+			this.setText(number);
+		}
 	}
 
 	/**
@@ -70,16 +102,6 @@ abstract class CaseItem extends JLabel {
 	 */
 	public int getState() {
 		return state;
-	}
-
-	/**
-	 * The current state of the item. It could be an {@code this.EXPLOSIVE} or a
-	 * {@code this.SAFE} state.
-	 * 
-	 * @author Tristan BOULESTEIX
-	 */
-	public void setState(int state) {
-		this.state = state;
 	}
 
 	/**
@@ -123,5 +145,25 @@ abstract class CaseItem extends JLabel {
 	 */
 	protected void setNumberOfExplosiveNeighboor(int numberOfExplosiveNeighboor) {
 		this.numberOfExplosiveNeighboor = numberOfExplosiveNeighboor;
+	}
+
+	/**
+	 * The number of bomb next to the case
+	 * 
+	 * @return current position
+	 * @author Tristan BOULESTEIX
+	 */
+	public Coordonnees getPosition() {
+		return position;
+	}
+
+	/**
+	 * The list of bombs
+	 * 
+	 * @return An ArrayList of all bombs
+	 * @author Tristan BOULESTEIX
+	 */
+	public ArrayList<Integer> getListOfAllBombs() {
+		return listOfAllBombs;
 	}
 }

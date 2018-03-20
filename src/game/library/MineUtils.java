@@ -2,7 +2,15 @@ package game.library;
 
 import java.util.ArrayList;
 
+import game.demineur.items.Case;
+
 public class MineUtils {
+	private static ArrayList<Case> listDesCases = new ArrayList<>();
+
+	public static void addToList(Case nouvelleCase) {
+		listDesCases.add(nouvelleCase);
+	}
+
 	public static Coordonnees[] generateCoordonneesVoisines(int i, int j) {
 		Coordonnees[] tableauCoor = new Coordonnees[8];
 
@@ -74,5 +82,12 @@ public class MineUtils {
 		}
 
 		return coor;
+	}
+
+	/**
+	 * @return listDesCases
+	 */
+	public static ArrayList<Case> getListDesCases() {
+		return listDesCases;
 	}
 }

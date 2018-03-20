@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 
 import game.demineur.items.Case;
 import game.demineur.utils.GameConstants;
+import game.library.Coordonnees;
 import game.library.MineUtils;
 
 public class GameWindow {
@@ -159,9 +160,9 @@ public class GameWindow {
 				int neighboor = MineUtils.giveNeighbourNumber(MineUtils.generateCoordonneesVoisines(i, j), arrayCases);
 
 				if (MineUtils.isABomb(i, j, arrayCases)) {
-					aX = new Case(Case.EXPLOSIVE, neighboor);
+					aX = new Case(Case.EXPLOSIVE, neighboor, new Coordonnees(i, j), arrayCases);
 				} else {
-					aX = new Case(Case.SAFE, neighboor);
+					aX = new Case(Case.SAFE, neighboor, new Coordonnees(i, j), arrayCases);
 				}
 
 				aX.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -171,6 +172,8 @@ public class GameWindow {
 				cAX.weightx = 25;
 				cAX.weighty = 25;
 				cAX.fill = GridBagConstraints.BOTH;
+
+				MineUtils.addToList(aX);
 
 				gamePane.add(aX, cAX);
 			}
