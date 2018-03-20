@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import game.demineur.data.BooleanChangeTest;
+import game.demineur.data.endTheGame;
 import game.demineur.utils.ImagesSettings;
 import game.demineur.utils.Path;
 import game.library.Coordonnees;
@@ -21,6 +21,8 @@ abstract class CaseItem extends JLabel {
 	public static final int BOMB = -200;
 	public static final int FLAG = -300;
 	public static final int NUMBER = -400;
+
+	public boolean discovered = false;
 
 	private final Dimension DIMENSION = new Dimension(25, 25);
 
@@ -46,7 +48,7 @@ abstract class CaseItem extends JLabel {
 
 	protected ArrayList<Integer> listOfAllBombs;
 
-	protected BooleanChangeTest booom = new BooleanChangeTest();
+	protected endTheGame booom = new endTheGame();
 
 	/**
 	 * @param state
@@ -68,11 +70,13 @@ abstract class CaseItem extends JLabel {
 	public void changeToBomb() {
 		ImagesSettings setImage = new ImagesSettings();
 		setImage.displayImage(this, Path.BOMB_PICTURE, 25, 25);
+		setDiscovered(true);
 	}
 
 	public void changeToFlag() {
 		ImagesSettings setImage = new ImagesSettings();
 		setImage.displayImage(this, Path.FLAG_PICTURE, 25, 25);
+		setDiscovered(true);
 	}
 
 	/**
@@ -92,6 +96,8 @@ abstract class CaseItem extends JLabel {
 			String number = String.valueOf(numberOfNeighboor);
 			this.setText(number);
 		}
+
+		setDiscovered(true);
 	}
 
 	/**
@@ -165,5 +171,27 @@ abstract class CaseItem extends JLabel {
 	 */
 	public ArrayList<Integer> getListOfAllBombs() {
 		return listOfAllBombs;
+	}
+
+	/**
+	 * Change the case to "discovered" status: It means that the case state's is
+	 * known by the player or flagged.
+	 * 
+	 * @param boolean
+	 *            discovered
+	 * @author Tristan BOULESTEIX
+	 */
+	public void setDiscovered(boolean discovered) {
+		this.discovered = discovered;
+	}
+
+	/**
+	 * Check if the current case is discovered or not
+	 * 
+	 * @return boolean discovered
+	 * @author Tristan BOULESTEIX
+	 */
+	public boolean isDiscovered() {
+		return this.discovered;
 	}
 }

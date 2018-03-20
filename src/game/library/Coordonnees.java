@@ -1,8 +1,8 @@
 package game.library;
 
 public class Coordonnees {
+	protected int ordonnee;
 	protected int abscisse;
-	protected int ordonnees;
 
 	public Coordonnees(int i, int j) {
 		setAbscisse(i);
@@ -13,7 +13,7 @@ public class Coordonnees {
 	 * @return the abscisse
 	 */
 	public int getAbscisse() {
-		return abscisse;
+		return ordonnee;
 	}
 
 	/**
@@ -21,14 +21,14 @@ public class Coordonnees {
 	 *            the abscisse to set
 	 */
 	protected void setAbscisse(int abscisse) {
-		this.abscisse = abscisse;
+		this.ordonnee = abscisse;
 	}
 
 	/**
 	 * @return the ordonneés
 	 */
 	public int getOrdonnees() {
-		return ordonnees;
+		return abscisse;
 	}
 
 	/**
@@ -36,6 +36,6 @@ public class Coordonnees {
 	 *            the ordonneés to set
 	 */
 	protected void setOrdonnees(int ordonnees) {
-		this.ordonnees = ordonnees;
+		this.abscisse = ordonnees;
 	}
 }

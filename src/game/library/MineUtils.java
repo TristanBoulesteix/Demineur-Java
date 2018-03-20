@@ -66,7 +66,7 @@ public class MineUtils {
 		arrayCoor = removeNegativeCoordonnees(arrayCoor);
 
 		for (int i = 0; i < arrayCoor.length; i++) {
-			if (isABomb(arrayCoor[i].abscisse, arrayCoor[i].ordonnees, list)) {
+			if (isABomb(arrayCoor[i].ordonnee, arrayCoor[i].abscisse, list)) {
 				numberOfNeighboor++;
 			}
 		}
@@ -76,7 +76,7 @@ public class MineUtils {
 
 	public static Coordonnees[] removeNegativeCoordonnees(Coordonnees[] coor) {
 		for (int i = 0; i < coor.length; i++) {
-			if (coor[i].abscisse < 0 || coor[i].ordonnees < 0) {
+			if (coor[i].ordonnee < 0 || coor[i].abscisse < 0) {
 				coor[i] = new Coordonnees(10, 10);
 			}
 		}
@@ -89,5 +89,29 @@ public class MineUtils {
 	 */
 	public static ArrayList<Case> getListDesCases() {
 		return listDesCases;
+	}
+
+	public static void revealEmptyCaseAdjacent(Coordonnees position, ArrayList<Integer> listOfAllBombs) {
+		ArrayList<Case> listDesCases = getListDesCases();
+		Coordonnees[] neighboor = generateCoordonneesVoisines(position.ordonnee, position.abscisse);
+		neighboor = removeNegativeCoordonnees(neighboor);
+
+		System.out.print(position.ordonnee + "" + position.abscisse + "\n");
+
+		for (int i = 0; i < neighboor.length; i++) {
+			StringBuilder positionBuilded = new StringBuilder();
+			positionBuilded.append(neighboor[i].ordonnee);
+			positionBuilded.append(neighboor[i].abscisse);
+			String temporaryPposition = positionBuilded.toString();
+			int positionNeighboor = Integer.parseInt(temporaryPposition);
+			System.out.print(positionNeighboor + " ");
+
+			if ((listDesCases.get(positionNeighboor).getState() == Case.SAFE)
+					&& !(listDesCases.get(positionNeighboor).isDiscovered())
+					&& (listDesCases.get(positionNeighboor).getNumberOfExplosiveNeighboor() == 0)) {
+				listDesCases.get(positionNeighboor).changeToNumber(0);
+			}
+		}
+
 	}
 }

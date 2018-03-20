@@ -11,4 +11,8 @@ public class Popup {
 
 		return choice;
 	}
+
+	public static void defeatPopup() {
+		JOptionPane.showMessageDialog(null, "Défaite", "Défaite", JOptionPane.INFORMATION_MESSAGE);
+	}
 }

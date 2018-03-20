@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -30,15 +31,18 @@ public class GameWindow {
 	public final int TAILLE_Y = 600;
 	public final Dimension TAILLE_DEFAULT = new Dimension(TAILLE_X, TAILLE_Y);
 
-	private JFrame frame;
+	private JFrame frmDmineur;
 	private final Action action = new SwingAction();
 
 	public JFrame getFrame() {
-		return frame;
+		return frmDmineur;
 	}
 
 	public void setFrame(JFrame frame) {
-		this.frame = frame;
+		this.frmDmineur = frame;
+		frmDmineur.setTitle("Démineur");
+		frame.setIconImage(Toolkit.getDefaultToolkit()
+				.getImage(GameWindow.class.getResource("/pictures/menuImage/Image_menu_démineur.jpg")));
 	}
 
 	/**
@@ -120,7 +124,7 @@ public class GameWindow {
 		gridBagLayout.rowHeights = new int[] { 0, 0 };
 		gridBagLayout.columnWeights = new double[] { 1.0, 1.0 };
 		gridBagLayout.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
-		frame.getContentPane().setLayout(gridBagLayout);
+		frmDmineur.getContentPane().setLayout(gridBagLayout);
 
 		JPanel gamePane = new JPanel();
 		gamePane.setPreferredSize(new Dimension(200, 400));
@@ -129,7 +133,7 @@ public class GameWindow {
 		cGamePane.gridy = 0;
 		cGamePane.weightx = 225;
 		cGamePane.weighty = 225;
-		frame.getContentPane().add(gamePane, cGamePane);
+		frmDmineur.getContentPane().add(gamePane, cGamePane);
 
 		JPanel timePanel = new JPanel();
 		timePanel.setPreferredSize(new Dimension(400, 400));
@@ -138,7 +142,7 @@ public class GameWindow {
 		cTimePane.fill = GridBagConstraints.BOTH;
 		cTimePane.gridx = 1;
 		cTimePane.gridy = 0;
-		frame.getContentPane().add(timePanel, cTimePane);
+		frmDmineur.getContentPane().add(timePanel, cTimePane);
 
 		addComponents(gamePane);
 	}
