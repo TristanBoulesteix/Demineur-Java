@@ -24,7 +24,7 @@ public class Case extends CaseItem {
 					setStatus(CaseItem.BOMB);
 					changeToBomb();
 				} else if (getState() == CaseItem.SAFE) {
-					System.out.println(getNumberOfExplosiveNeighboor());
+					changeToNumber(neighboor);
 				}
 			}
 		});

@@ -3,6 +3,7 @@ package game.demineur.items;
 import java.awt.Dimension;
 
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import game.demineur.utils.ImagesSettings;
 import game.demineur.utils.Path;
@@ -48,9 +49,17 @@ abstract class CaseItem extends JLabel {
 		setNumberOfExplosiveNeighboor(neighboors);
 	}
 
-	protected void changeToBomb() {
+	public void changeToBomb() {
 		ImagesSettings setImage = new ImagesSettings();
 		setImage.displayImage(this, Path.BOMB_PICTURE, 25, 25);
+	}
+
+	public void changeToNumber(int numberOfNeighboor) {
+		this.setIcon(null);
+		this.setHorizontalAlignment(SwingConstants.CENTER);
+		this.setVerticalAlignment(SwingConstants.CENTER);
+		String number = String.valueOf(numberOfNeighboor);
+		this.setText(number);
 	}
 
 	/**
