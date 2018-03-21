@@ -20,7 +20,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 
 import game.demineur.ingame.LaunchGame;
-import game.demineur.popup.Popup;
 import game.demineur.utils.GameConstants;
 import game.demineur.utils.ImagesSettings;
 import game.demineur.utils.Path;
@@ -33,6 +32,8 @@ public class MainMenuWindow {
 	private final Action action_2 = new SwingAction_2();
 	private final Action action_3 = new SwingAction_3();
 	private final Action action_4 = new SwingAction_4();
+
+	private String gridSize;
 
 	public JFrame getFrmMenu() {
 		return frmMenu;
@@ -152,13 +153,9 @@ public class MainMenuWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String gridSize = Popup.askForGridSize();
-
-			if (gridSize != null) {
-				frmMenu.dispose();
-				LaunchGame game = new LaunchGame();
-				game.newGame(gridSize);
-			}
+			frmMenu.dispose();
+			LaunchGame game = new LaunchGame();
+			game.newGame(gridSize);
 		}
 	}
 
@@ -210,6 +207,7 @@ public class MainMenuWindow {
 		public void actionPerformed(ActionEvent e) {
 			SettingPopup parametre = new SettingPopup(null, "Paramètre", true);
 			SettingPopupInfo setPopup = parametre.showSettingPopup();
+			JOptionPane.showMessageDialog(null, setPopup.toString(), "test", JOptionPane.INFORMATION_MESSAGE);
 
 		}
 	}
