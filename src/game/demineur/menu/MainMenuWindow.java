@@ -17,6 +17,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JSeparator;
 
 import game.demineur.ingame.LaunchGame;
 import game.demineur.popup.Popup;
@@ -105,6 +106,9 @@ public class MainMenuWindow {
 		JMenuItem mntmChangelog = new JMenuItem("Changelog");
 		mntmChangelog.setAction(action_2);
 		mnPropos.add(mntmChangelog);
+
+		JSeparator separator = new JSeparator();
+		mnPropos.add(separator);
 
 		JMenuItem mntmVersion = new JMenuItem("Version " + GameConstants.VERNUM);
 		mntmVersion.setEnabled(false);
@@ -205,7 +209,8 @@ public class MainMenuWindow {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			SettingPopup parametre = new SettingPopup(null, "Paramètre", true);
-			parametre.showSettingPopup();
+			SettingPopupInfo setPopup = parametre.showSettingPopup();
+
 		}
 	}
 }

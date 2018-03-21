@@ -1,29 +1,32 @@
 package game.demineur.menu;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Properties;
-
-import game.demineur.utils.Path;
-
 public class SettingPopupInfo {
-	private String nomJoueur, defaultGridSize, score;
+	private String nom, sexe, age, cheveux, taille;
 
 	public SettingPopupInfo() {
-		readDefaultSetttingsPath();
 	}
 
-	public void readDefaultSetttingsPath() {
-		try {
-			Properties pathProperties = new Properties();
-			pathProperties.load(new FileInputStream(Path.DEFAULT_PATH_INI));
-			System.out.print(pathProperties.getProperty("Current_path"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+	public SettingPopupInfo(String nom, String sexe, String age, String cheveux, String taille) {
+		this.nom = nom;
+		this.sexe = sexe;
+		this.age = age;
+		this.cheveux = cheveux;
+		this.taille = taille;
+	}
+
+	@Override
+	public String toString() {
+		String str;
+		if (this.nom != null && this.sexe != null && this.taille != null && this.age != null && this.cheveux != null) {
+			str = "Description de l'objet InfoZDialog";
+			str += "Nom : " + this.nom + "\n";
+			str += "Sexe : " + this.sexe + "\n";
+			str += "Age : " + this.age + "\n";
+			str += "Cheveux : " + this.cheveux + "\n";
+			str += "Taille : " + this.taille + "\n";
+		} else {
+			str = "Aucune information !";
 		}
+		return str;
 	}
-
 }
