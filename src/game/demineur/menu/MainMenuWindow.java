@@ -6,6 +6,7 @@ import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -20,6 +21,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 
 import game.demineur.ingame.LaunchGame;
+import game.demineur.menu.settings.SettingPopup;
+import game.demineur.menu.settings.SettingReader;
 import game.demineur.utils.GameConstants;
 import game.demineur.utils.ImagesSettings;
 import game.demineur.utils.Path;
@@ -33,7 +36,9 @@ public class MainMenuWindow {
 	private final Action action_3 = new SwingAction_3();
 	private final Action action_4 = new SwingAction_4();
 
-	private String gridSize;
+	private SettingReader settings;
+
+	private String profilName, gridSize;
 
 	public JFrame getFrmMenu() {
 		return frmMenu;
@@ -68,6 +73,11 @@ public class MainMenuWindow {
 		initialize();
 	}
 
+	public MainMenuWindow(SettingReader settings) {
+		this.settings = settings;
+		initialize();
+	}
+
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -75,13 +85,37 @@ public class MainMenuWindow {
 		setFrmMenu(new JFrame());
 		getFrmMenu().setTitle("Menu");
 		getFrmMenu().setBounds(100, 100, 600, 500);
-		getFrmMenu().setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		getFrmMenu().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JMenuBar menuBar = new JMenuBar();
 		frmMenu.setJMenuBar(menuBar);
 
 		JMenu mnDmineur = new JMenu("D\u00E9mineur");
 		menuBar.add(mnDmineur);
+
+		JMenu mnProfils = new JMenu("Profils");
+		mnDmineur.add(mnProfils);
+
+		JMenu mnListeDesProfils = new JMenu("Liste des profils");
+		mnProfils.add(mnListeDesProfils);
+
+		mnProfils = addListProfileToMenu(mnProfils, settings);
+
+		JSeparator separator_1 = new JSeparator();
+		mnProfils.add(separator_1);
+
+		JMenuItem mntmNouveauProfil = new JMenuItem("Nouveau profil");
+		mnProfils.add(mntmNouveauProfil);
+
+		JMenuItem mntmSupprimerUnProfil = new JMenuItem("Supprimer un profil");
+		mnProfils.add(mntmSupprimerUnProfil);
+
+		JSeparator separator_2 = new JSeparator();
+		mnProfils.add(separator_2);
+
+		JMenuItem mntmCurrentprofile = new JMenuItem(settings.getProfilName());
+		mntmCurrentprofile.setEnabled(false);
+		mnProfils.add(mntmCurrentprofile);
 
 		JMenuItem mntmParamtres = new JMenuItem("Param\u00E8tres");
 		mntmParamtres.setAction(action_4);
@@ -205,10 +239,35 @@ public class MainMenuWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			SettingPopup parametre = new SettingPopup(null, "Paramètre", true);
-			SettingPopupInfo setPopup = parametre.showSettingPopup();
-			JOptionPane.showMessageDialog(null, setPopup.toString(), "test", JOptionPane.INFORMATION_MESSAGE);
+			SettingPopup parametre = new SettingPopup(null, "Paramètre", true, settings);
+			String[] settingData = parametre.showSettingPopup();
+			updateSettingData(settingData);
 
 		}
+	}
+
+	protected void updateSettingData(String[] settingData) {
+		profilName = settingData[0];
+		gridSize = settingData[1];
+	}
+
+	protected JMenu addListProfileToMenu(JMenu menuToUpdate, SettingReader settings) {
+		File profileDirectory = new File(Path.PROFIL_PATH);
+		File[] profilList = profileDirectory.listFiles();
+
+		if (profilList.length != 0) {
+			for (int i = 0; i < profilList.length; i++) {
+				if (!(profilList[i].getName().equals(settings.getProfilName()))) {
+					JMenuItem menuItem = new JMenuItem(profilList[i].getName());
+					menuToUpdate.add(menuItem);
+				}
+			}
+		} else {
+			JMenuItem menuItem = new JMenuItem("Aucun profil enregistré");
+			menuItem.setEnabled(false);
+			menuToUpdate.add(menuItem);
+		}
+
+		return menuToUpdate;
 	}
 }

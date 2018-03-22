@@ -1,4 +1,4 @@
-package game.demineur.menu;
+package game.demineur.menu.settings;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -15,18 +15,22 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class SettingPopup extends JDialog {
-	private SettingPopupInfo info = new SettingPopupInfo();
+	// Données de la popup
+	private SettingReader settings;
+	private String globalSetting, profil, gridSize;
+
+	// Élément de la popup
+	private String[] settingList = new String[3];
 	private JLabel profilLabel, generalSettingsLabel, gameSizeLabel;
 	private JRadioButton profilListBox1, profilListBox2, profilListBox3;
 	private JComboBox<String> globalSettingsChoice, profilChoiceList;
-	private JTextField taille;
 
-	public SettingPopup(JFrame parent, String title, boolean modal) {
+	public SettingPopup(JFrame parent, String title, boolean modal, SettingReader settings) {
 		super(parent, title, modal);
+		this.settings = settings;
 		this.setSize(550, 270);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
@@ -34,9 +38,9 @@ public class SettingPopup extends JDialog {
 		this.initComponent();
 	}
 
-	public SettingPopupInfo showSettingPopup() {
+	public String[] showSettingPopup() {
 		this.setVisible(true);
-		return this.info;
+		return this.settingList;
 	}
 
 	private void initComponent() {
@@ -45,8 +49,8 @@ public class SettingPopup extends JDialog {
 		profilPan.setBackground(Color.white);
 		profilPan.setPreferredSize(new Dimension(220, 90));
 		profilChoiceList = new JComboBox<String>();
-		profilChoiceList.setEditable(true);
-		profilChoiceList.setPreferredSize(new Dimension(100, 25));
+		profilChoiceList = SettingsUtils.updateProfilBox(profilChoiceList, settings);
+		profilChoiceList.setPreferredSize(new Dimension(190, 25));
 		profilPan.setBorder(BorderFactory.createTitledBorder("Profil"));
 		profilLabel = new JLabel("Sélectionnez un profil :");
 		profilPan.add(profilLabel);
@@ -65,6 +69,7 @@ public class SettingPopup extends JDialog {
 		group.add(profilListBox1);
 		group.add(profilListBox2);
 		group.add(profilListBox3);
+		group = SettingsUtils.selectDefaultElement(profilListBox3, profilListBox2, profilListBox1, settings, group);
 		gridSize.add(gameSizeLabel);
 		gridSize.add(profilListBox1);
 		gridSize.add(profilListBox2);
@@ -94,8 +99,9 @@ public class SettingPopup extends JDialog {
 		okBouton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				info = new SettingPopupInfo((String) globalSettingsChoice.getSelectedItem(),
-						(String) profilChoiceList.getSelectedItem(), getGridSize());
+				settingList[0] = (String) profilChoiceList.getSelectedItem();
+				settingList[1] = getGridSize();
+				settingList[2] = (String) globalSettingsChoice.getSelectedItem();
 				setVisible(false);
 			}
 
