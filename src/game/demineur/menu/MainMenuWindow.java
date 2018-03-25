@@ -23,9 +23,12 @@ import javax.swing.JSeparator;
 import game.demineur.ingame.LaunchGame;
 import game.demineur.menu.settings.SettingPopup;
 import game.demineur.menu.settings.SettingReader;
+import game.demineur.menu.settings.SettingsUtils;
+import game.demineur.popup.Popup;
 import game.demineur.utils.GameConstants;
 import game.demineur.utils.ImagesSettings;
 import game.demineur.utils.Path;
+import game.library.Restart;
 
 public class MainMenuWindow {
 
@@ -39,6 +42,7 @@ public class MainMenuWindow {
 	private SettingReader settings;
 
 	private String profilName, gridSize;
+	private final Action action_5 = new SwingAction_5();
 
 	public JFrame getFrmMenu() {
 		return frmMenu;
@@ -85,6 +89,7 @@ public class MainMenuWindow {
 		setFrmMenu(new JFrame());
 		getFrmMenu().setTitle("Menu");
 		getFrmMenu().setBounds(100, 100, 600, 500);
+		getFrmMenu().setLocationRelativeTo(null);
 		getFrmMenu().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JMenuBar menuBar = new JMenuBar();
@@ -99,12 +104,13 @@ public class MainMenuWindow {
 		JMenu mnListeDesProfils = new JMenu("Liste des profils");
 		mnProfils.add(mnListeDesProfils);
 
-		mnProfils = addListProfileToMenu(mnProfils, settings);
+		mnListeDesProfils = addListProfileToMenu(mnListeDesProfils, settings);
 
 		JSeparator separator_1 = new JSeparator();
 		mnProfils.add(separator_1);
 
 		JMenuItem mntmNouveauProfil = new JMenuItem("Nouveau profil");
+		mntmNouveauProfil.setAction(action_5);
 		mnProfils.add(mntmNouveauProfil);
 
 		JMenuItem mntmSupprimerUnProfil = new JMenuItem("Supprimer un profil");
@@ -255,7 +261,9 @@ public class MainMenuWindow {
 		File profileDirectory = new File(Path.PROFIL_PATH);
 		File[] profilList = profileDirectory.listFiles();
 
-		if (profilList.length != 0) {
+		if (profilList.length == 1 && profilList[0].getName().equals(settings.getProfilName())) {
+			menuToUpdate.setEnabled(false);
+		} else if (profilList.length != 0) {
 			for (int i = 0; i < profilList.length; i++) {
 				if (!(profilList[i].getName().equals(settings.getProfilName()))) {
 					JMenuItem menuItem = new JMenuItem(profilList[i].getName());
@@ -269,5 +277,25 @@ public class MainMenuWindow {
 		}
 
 		return menuToUpdate;
+	}
+
+	@SuppressWarnings("serial")
+	private class SwingAction_5 extends AbstractAction {
+		public SwingAction_5() {
+			putValue(NAME, "Nouveau profil");
+			putValue(SHORT_DESCRIPTION, "Ajouter un nouveau profil");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			boolean confirmed = Popup.askForRestart();
+
+			if (confirmed) {
+				String profileName = Popup.addNewProfile();
+				SettingsUtils.addNewProfile(profileName, settings);
+				Restart restart = new Restart();
+				restart.restartApplication();
+			}
+		}
 	}
 }
