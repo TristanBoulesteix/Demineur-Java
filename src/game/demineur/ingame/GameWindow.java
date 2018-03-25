@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import game.demineur.items.Case;
+import game.demineur.items.Chrono;
 import game.demineur.utils.GameConstants;
 import game.demineur.utils.Path;
 import game.library.Coordonnees;
@@ -139,7 +140,10 @@ public class GameWindow {
 
 		JPanel timePanel = new JPanel();
 		timePanel.setPreferredSize(new Dimension(400, 400));
-		timePanel.setBackground(Color.DARK_GRAY);
+		timePanel.setBackground(Color.BLACK);
+		Chrono timer = new Chrono();
+		timer.startTimer();
+		timePanel.add(timer);
 		GridBagConstraints cTimePane = new GridBagConstraints();
 		cTimePane.fill = GridBagConstraints.BOTH;
 		cTimePane.gridx = 1;

@@ -22,7 +22,7 @@ public class SettingPopup extends JDialog {
 	private SettingReader settings;
 	private String globalSetting, profil, gridSize;
 
-	// Élément de la popup
+	// Éléments de la popup
 	private String[] settingList = new String[3];
 	private JLabel profilLabel, generalSettingsLabel, gameSizeLabel;
 	private JRadioButton profilListBox1, profilListBox2, profilListBox3;
@@ -44,7 +44,6 @@ public class SettingPopup extends JDialog {
 	}
 
 	private void initComponent() {
-
 		JPanel profilPan = new JPanel();
 		profilPan.setBackground(Color.white);
 		profilPan.setPreferredSize(new Dimension(220, 90));
@@ -80,9 +79,7 @@ public class SettingPopup extends JDialog {
 		othersSettings.setPreferredSize(new Dimension(440, 60));
 		othersSettings.setBorder(BorderFactory.createTitledBorder("Paramètre du jeu"));
 		globalSettingsChoice = new JComboBox<String>();
-		globalSettingsChoice.addItem("Masculin");
-		globalSettingsChoice.addItem("Féminin");
-		globalSettingsChoice.addItem("Indéterminé");
+		globalSettingsChoice.addItem("Aucune option");
 		generalSettingsLabel = new JLabel("");
 		othersSettings.add(generalSettingsLabel);
 		othersSettings.add(globalSettingsChoice);
