@@ -40,7 +40,7 @@ public class Chrono extends JLabel {
 
 		chronometer = new Timer(delais, tache_timer);
 
-		this.setBorder(new EmptyBorder(10, 50, 50, 10));
+		this.setBorder(new EmptyBorder(5, 5, 10, 10));
 
 		debut.addActionListener(new ActionListener() {
 			@Override

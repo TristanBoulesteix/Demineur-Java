@@ -22,7 +22,7 @@ abstract class CaseItem extends JLabel {
 	public static final int FLAG = -300;
 	public static final int NUMBER = -400;
 
-	public boolean discovered = false;
+	private boolean discovered = false;
 
 	private final Dimension DIMENSION = new Dimension(25, 25);
 
@@ -46,21 +46,21 @@ abstract class CaseItem extends JLabel {
 
 	protected Coordonnees position;
 
-	protected ArrayList<Integer> listOfAllBombs;
+	protected ArrayList<Coordonnees> listOfAllBombs;
 
 	protected endTheGame booom = new endTheGame();
 
 	/**
-	 * @param state
-	 * @param listOfAllBombs
 	 * @param nombre
 	 *            de voisins
+	 * @param position
+	 * @param arrayCases
 	 */
-	public CaseItem(int state, int neighboors, Coordonnees position, ArrayList<Integer> listOfAllBombs) {
+	public CaseItem(int neighboors, Coordonnees position, ArrayList<Coordonnees> arrayCases) {
 		this.setPreferredSize(DIMENSION);
-		this.state = state;
+		this.state = SAFE;
 		this.position = position;
-		this.listOfAllBombs = listOfAllBombs;
+		this.listOfAllBombs = arrayCases;
 		setNumberOfExplosiveNeighboor(neighboors);
 	}
 
@@ -112,8 +112,18 @@ abstract class CaseItem extends JLabel {
 	}
 
 	/**
+	 * The current state of the item. It could be an {@code this.EXPLOSIVE} or a
+	 * {@code this.SAFE} state.
+	 * 
+	 * @author Tristan BOULESTEIX
+	 */
+	public void setState(int state) {
+		this.state = state;
+	}
+
+	/**
 	 * The current status of the item. It could be a {@code this.CASE}, a
-	 * {@code this.BOMB} or a {@code this.FLAG}.
+	 * {@code this.BOMB}, a {@code this.NUMBER} or a {@code this.FLAG}.
 	 * 
 	 * @author Tristan BOULESTEIX
 	 */
@@ -170,7 +180,7 @@ abstract class CaseItem extends JLabel {
 	 * @return An ArrayList of all bombs
 	 * @author Tristan BOULESTEIX
 	 */
-	public ArrayList<Integer> getListOfAllBombs() {
+	public ArrayList<Coordonnees> getListOfAllBombs() {
 		return listOfAllBombs;
 	}
 
@@ -194,5 +204,15 @@ abstract class CaseItem extends JLabel {
 	 */
 	public boolean isDiscovered() {
 		return this.discovered;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("state=").append(state);
+		sb.append(", status=").append(status);
+		sb.append(", position=").append(position);
+		sb.append(", bombsAround=").append(numberOfExplosiveNeighboor);
+		return sb.toString();
 	}
 }

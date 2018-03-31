@@ -81,6 +81,7 @@ public class GameWindow {
 		setFrame(new JFrame());
 		getFrame().setBounds(100, 100, TAILLE_X, TAILLE_Y);
 		getFrame().setMinimumSize(TAILLE_DEFAULT);
+		getFrame().setLocationRelativeTo(null);
 		getFrame().addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent evt) {
@@ -163,53 +164,66 @@ public class GameWindow {
 
 		Case aX;
 
-		ArrayList<Integer> arrayCases = chooseRandomPlaceToBombs(9);
+		ArrayList<Coordonnees> arrayCases = chooseRandomPlaceToBombs(9);
 
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				int neighboor = MineUtils.giveNeighbourNumber(MineUtils.generateCoordonneesVoisines(i, j), arrayCases);
 
-				if (MineUtils.isABomb(i, j, arrayCases)) {
-					aX = new Case(Case.EXPLOSIVE, neighboor, new Coordonnees(i, j), arrayCases);
-				} else {
-					aX = new Case(Case.SAFE, neighboor, new Coordonnees(i, j), arrayCases);
-				}
+				aX = new Case(neighboor, new Coordonnees(i, j), arrayCases);
 
 				aX.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				GridBagConstraints cAX = new GridBagConstraints();
-				cAX.gridx = j;
-				cAX.gridy = i;
+				cAX.gridx = i;
+				cAX.gridy = j;
 				cAX.weightx = 25;
 				cAX.weighty = 25;
 				cAX.fill = GridBagConstraints.BOTH;
 
-				MineUtils.addToList(aX);
+				MineUtils.casePositionArray(aX);
 
 				gamePane.add(aX, cAX);
 			}
 		}
+
+		placeBombs(arrayCases);
 	}
 
-	public ArrayList<Integer> chooseRandomPlaceToBombs(int maxSize) {
-		ArrayList<Integer> arrayOfInt = new ArrayList<>();
+	public void placeBombs(ArrayList<Coordonnees> coordinatesOfBombs) {
+		Case[][] casesList = MineUtils.getCaseList();
+
+		for (int i = 0; i < casesList.length; i++) {
+			for (int j = 0; j < casesList[i].length; j++) {
+				for (int k = 0; k < coordinatesOfBombs.size(); k++) {
+					if (casesList[i][j].getPosition().equals(coordinatesOfBombs.get(k))) {
+						casesList[i][j].setState(Case.EXPLOSIVE);
+					}
+				}
+			}
+		}
+	}
+
+	public ArrayList<Coordonnees> chooseRandomPlaceToBombs(int maxSize) {
+		ArrayList<Coordonnees> arrayOfcoordinates = new ArrayList<>();
 
 		if (maxSize == 9) {
 			int bombToPlace = 10;
 
 			for (int i = 1; i <= bombToPlace; i++) {
-				int num = randomBetween(0, 81);
+				int x = randomBetween(0, 8);
+				int y = randomBetween(0, 8);
 
-				if (arrayOfInt.size() == 0) {
-					arrayOfInt.add(num);
-				} else if (isAlreadyExistant(arrayOfInt, num)) {
+				Coordonnees coor = new Coordonnees(x, y);
+
+				if (isAlreadyExistant(arrayOfcoordinates, coor)) {
 					i--;
 				} else {
-					arrayOfInt.add(num);
+					arrayOfcoordinates.add(coor);
 				}
 			}
 		}
 
-		return arrayOfInt;
+		return arrayOfcoordinates;
 	}
 
 	public int randomBetween(int min, int max) {
@@ -217,11 +231,11 @@ public class GameWindow {
 		return randomNumber;
 	}
 
-	public boolean isAlreadyExistant(ArrayList<Integer> list, int numberToCheck) {
+	public boolean isAlreadyExistant(ArrayList<Coordonnees> arrayOfcoordinates, Coordonnees coor) {
 		boolean exist = false;
 
-		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i) == numberToCheck) {
+		for (int i = 0; i < arrayOfcoordinates.size(); i++) {
+			if (arrayOfcoordinates.get(i).equals(coor)) {
 				exist = false;
 				break;
 			}

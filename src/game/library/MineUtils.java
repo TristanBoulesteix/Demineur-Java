@@ -5,54 +5,61 @@ import java.util.ArrayList;
 import game.demineur.items.Case;
 
 public class MineUtils {
-	private static ArrayList<Case> listDesCases = new ArrayList<>();
+	private static Case[][] casesList = new Case[9][9];
 
-	public static void addToList(Case nouvelleCase) {
-		listDesCases.add(nouvelleCase);
+	public static void casePositionArray(Case caseToAdd) {
+		Case[][] PlaceCase = getCaseList();
+
+		PlaceCase[caseToAdd.getPosition().getAbscisse()][caseToAdd.getPosition().getOrdonnees()] = caseToAdd;
+
+		setCaseList(PlaceCase);
 	}
 
-	public static Coordonnees[] generateCoordonneesVoisines(int i, int j) {
+	public static Case[][] getCaseList() {
+		return casesList;
+	}
+
+	private static void setCaseList(Case[][] caseGrid) {
+		MineUtils.casesList = caseGrid;
+	}
+
+	public static Coordonnees[] generateCoordonneesVoisines(int x, int y) {
 		Coordonnees[] tableauCoor = new Coordonnees[8];
 
-		Coordonnees topLeft = new Coordonnees(i - 1, j - 1);
+		Coordonnees topLeft = new Coordonnees(x - 1, y - 1);
 		tableauCoor[0] = topLeft;
 
-		Coordonnees topMiddle = new Coordonnees(i, j - 1);
+		Coordonnees topMiddle = new Coordonnees(x, y - 1);
 		tableauCoor[1] = topMiddle;
 
-		Coordonnees topRight = new Coordonnees(i + 1, j - 1);
+		Coordonnees topRight = new Coordonnees(x + 1, y - 1);
 		tableauCoor[2] = topRight;
 
-		Coordonnees middleLeft = new Coordonnees(i - 1, j);
+		Coordonnees middleLeft = new Coordonnees(x - 1, y);
 		tableauCoor[3] = middleLeft;
 
-		Coordonnees middleRight = new Coordonnees(i + 1, j);
+		Coordonnees middleRight = new Coordonnees(x + 1, y);
 		tableauCoor[4] = middleRight;
 
-		Coordonnees bottomLeft = new Coordonnees(i - 1, j + 1);
+		Coordonnees bottomLeft = new Coordonnees(x - 1, y + 1);
 		tableauCoor[5] = bottomLeft;
 
-		Coordonnees bottomMiddle = new Coordonnees(i, j + 1);
+		Coordonnees bottomMiddle = new Coordonnees(x, y + 1);
 		tableauCoor[6] = bottomMiddle;
 
-		Coordonnees bottomRight = new Coordonnees(i + 1, j + 1);
+		Coordonnees bottomRight = new Coordonnees(x + 1, y + 1);
 		tableauCoor[7] = bottomRight;
 
 		return tableauCoor;
 	}
 
-	public static boolean isABomb(int dizaine, int unites, ArrayList<Integer> arrayToCheck) {
+	public static boolean isABomb(int dizaines, int unites, ArrayList<Coordonnees> arrayCases) {
 		boolean isBomb = false;
 
-		StringBuilder temp = new StringBuilder();
-		temp.append(dizaine);
-		temp.append(unites);
+		Coordonnees coordonnees = new Coordonnees(unites, dizaines);
 
-		String temporaryString = temp.toString();
-		int coordonnees = Integer.parseInt(temporaryString);
-
-		for (int i = 0; i < arrayToCheck.size(); i++) {
-			if (arrayToCheck.get(i) == coordonnees) {
+		for (int i = 0; i < arrayCases.size(); i++) {
+			if (arrayCases.get(i) == coordonnees) {
 				isBomb = true;
 				return isBomb;
 			}
@@ -61,12 +68,12 @@ public class MineUtils {
 		return isBomb;
 	}
 
-	public static int giveNeighbourNumber(Coordonnees[] arrayCoor, ArrayList<Integer> list) {
+	public static int giveNeighbourNumber(Coordonnees[] arrayCoor, ArrayList<Coordonnees> arrayCases) {
 		int numberOfNeighboor = 0;
 		arrayCoor = removeNegativeCoordonnees(arrayCoor);
 
 		for (int i = 0; i < arrayCoor.length; i++) {
-			if (isABomb(arrayCoor[i].ordonnee, arrayCoor[i].abscisse, list)) {
+			if (isABomb(arrayCoor[i].getOrdonnees(), arrayCoor[i].getAbscisse(), arrayCases)) {
 				numberOfNeighboor++;
 			}
 		}
@@ -76,7 +83,7 @@ public class MineUtils {
 
 	public static Coordonnees[] removeNegativeCoordonnees(Coordonnees[] coor) {
 		for (int i = 0; i < coor.length; i++) {
-			if (coor[i].ordonnee < 0 || coor[i].abscisse < 0) {
+			if (coor[i].getAbscisse() < 0 || coor[i].getOrdonnees() < 0) {
 				coor[i] = new Coordonnees(10, 10);
 			}
 		}
@@ -84,32 +91,19 @@ public class MineUtils {
 		return coor;
 	}
 
-	/**
-	 * @return listDesCases
-	 */
-	public static ArrayList<Case> getListDesCases() {
-		return listDesCases;
-	}
-
-	public static void revealEmptyCaseAdjacent(Coordonnees position, ArrayList<Integer> listOfAllBombs) {
-		ArrayList<Case> listDesCases = getListDesCases();
-		Coordonnees[] neighboor = generateCoordonneesVoisines(position.ordonnee, position.abscisse);
+	public static void revealEmptyCaseAdjacent(Coordonnees position) {
+		Case[][] listeDesCases = getCaseList();
+		Coordonnees[] neighboor = generateCoordonneesVoisines(position.getAbscisse(), position.getOrdonnees());
 		neighboor = removeNegativeCoordonnees(neighboor);
 
-		System.out.print(position.ordonnee + "" + position.abscisse + "\n");
-
 		for (int i = 0; i < neighboor.length; i++) {
-			StringBuilder positionBuilded = new StringBuilder();
-			positionBuilded.append(neighboor[i].ordonnee);
-			positionBuilded.append(neighboor[i].abscisse);
-			String temporaryPposition = positionBuilded.toString();
-			int positionNeighboor = Integer.parseInt(temporaryPposition);
-			System.out.print(positionNeighboor + " ");
+			System.out.println(listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()]);
 
-			if ((listDesCases.get(positionNeighboor).getState() == Case.SAFE)
-					&& !(listDesCases.get(positionNeighboor).isDiscovered())
-					&& (listDesCases.get(positionNeighboor).getNumberOfExplosiveNeighboor() == 0)) {
-				listDesCases.get(positionNeighboor).changeToNumber(0);
+			if ((listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()].getState() == Case.SAFE)
+					&& !(listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()].isDiscovered())
+					&& (listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()]
+							.getNumberOfExplosiveNeighboor() == 0)) {
+				listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()].changeToNumber(0);
 			}
 		}
 

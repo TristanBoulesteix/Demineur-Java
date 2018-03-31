@@ -1,7 +1,6 @@
 package game.demineur.data;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -16,24 +15,7 @@ import game.library.Coordonnees;
 import game.library.MineUtils;
 
 public class endTheGame {
-	public void DestroyAllBombs(Coordonnees firstBomb, ArrayList<Integer> listOfAllBombs) {
-		ArrayList<Case> list = MineUtils.getListDesCases();
-
-		for (int i = 0; i < list.size(); i++) {
-			StringBuilder position = new StringBuilder();
-			position.append(list.get(i).getPosition().getAbscisse());
-			position.append(list.get(i).getPosition().getOrdonnees());
-
-			int positionOfCase = Integer.parseInt(position.toString());
-
-			for (int j = 0; j < listOfAllBombs.size(); j++) {
-				if (positionOfCase == listOfAllBombs.get(j)) {
-					list.get(i).changeToBomb();
-				}
-
-			}
-		}
-
+	public void DestroyAllBombs(Coordonnees firstBomb) {
 		playExplosion();
 		discoverEverything();
 		Popup.defeatPopup();
@@ -41,19 +23,22 @@ public class endTheGame {
 	}
 
 	public void discoverEverything() {
-		ArrayList<Case> list = MineUtils.getListDesCases();
+		Case[][] list = MineUtils.getCaseList();
 
-		for (int i = 0; i < list.size(); i++) {
-			Case c = list.get(i);
+		for (int i = 0; i < list.length; i++) {
+			for (int j = 0; j < list[i].length; j++) {
+				Case c = list[i][j];
 
-			if (!c.discovered) {
-				if (c.getState() == Case.EXPLOSIVE) {
-					c.changeToBomb();
-				} else if (c.getState() == Case.SAFE) {
-					c.changeToNumber(c.getNumberOfExplosiveNeighboor());
+				if (!c.isDiscovered()) {
+					if (c.getState() == Case.EXPLOSIVE) {
+						c.changeToBomb();
+					} else if (c.getState() == Case.SAFE) {
+						c.changeToNumber(c.getNumberOfExplosiveNeighboor());
+					}
 				}
 			}
 		}
+
 	}
 
 	public void playExplosion() {

@@ -13,14 +13,13 @@ import game.library.MineUtils;
 
 @SuppressWarnings("serial")
 public class Case extends CaseItem {
-	public Case(int state, int neighboor, Coordonnees position, ArrayList<Integer> listOfAllBombs) {
-		super(state, neighboor, position, listOfAllBombs);
+	public Case(int neighboor, Coordonnees position, ArrayList<Coordonnees> arrayCases) {
+		super(neighboor, position, arrayCases);
 		setStatus(CaseItem.CASE);
 		ImagesSettings resize = new ImagesSettings();
 		resize.displayImage(this, Path.DEFAULT_CUBE_PICTURE, 25, 25);
 
 		this.addMouseListener(new MouseAdapter() {
-
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (SwingUtilities.isRightMouseButton(e) && getStatus() == CaseItem.CASE && !isDiscovered()) {
@@ -33,11 +32,11 @@ public class Case extends CaseItem {
 					if (getState() == CaseItem.EXPLOSIVE) {
 						setStatus(CaseItem.BOMB);
 						changeToBomb();
-						booom.DestroyAllBombs(getPosition(), getListOfAllBombs());
+						booom.DestroyAllBombs(getPosition());
 					} else if (getState() == CaseItem.SAFE) {
 						setStatus(CaseItem.NUMBER);
 						changeToNumber(neighboor);
-						MineUtils.revealEmptyCaseAdjacent(getPosition(), getListOfAllBombs());
+						MineUtils.revealEmptyCaseAdjacent(getPosition());
 					}
 				}
 
