@@ -25,7 +25,7 @@ public class Coordonnees {
 	}
 
 	/**
-	 * @return the ordonneés
+	 * @return the ordonnées
 	 */
 	public int getOrdonnees() {
 		return ordonnee;
@@ -33,7 +33,7 @@ public class Coordonnees {
 
 	/**
 	 * @param ordonnees
-	 *            the ordonneés to set
+	 *            the ordonnées to set
 	 */
 	protected void setOrdonnees(int ordonnees) {
 		this.ordonnee = ordonnees;
@@ -45,5 +45,17 @@ public class Coordonnees {
 		sb.append("x = ").append(abscisse);
 		sb.append(", y = ").append(ordonnee);
 		return sb.toString();
+	}
+
+	@Override
+	public boolean equals(Object anObject) {
+		if (super.equals(anObject)) {
+			return true;
+		}
+		if (anObject instanceof Coordonnees) {
+			Coordonnees aCoordonnee = (Coordonnees) anObject;
+			return this.getAbscisse() == aCoordonnee.getAbscisse() && this.getOrdonnees() == aCoordonnee.getOrdonnees();
+		}
+		return false;
 	}
 }

@@ -53,13 +53,13 @@ public class MineUtils {
 		return tableauCoor;
 	}
 
-	public static boolean isABomb(int dizaines, int unites, ArrayList<Coordonnees> arrayCases) {
+	public static boolean isABomb(int dizaines, int unites, ArrayList<Coordonnees> arrayCoordonnes) {
 		boolean isBomb = false;
 
 		Coordonnees coordonnees = new Coordonnees(unites, dizaines);
 
-		for (int i = 0; i < arrayCases.size(); i++) {
-			if (arrayCases.get(i) == coordonnees) {
+		for (int i = 0; i < arrayCoordonnes.size(); i++) {
+			if (arrayCoordonnes.get(i).equals(coordonnees)) {
 				isBomb = true;
 				return isBomb;
 			}
