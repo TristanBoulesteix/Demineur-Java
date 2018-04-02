@@ -21,6 +21,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import game.demineur.endIt.DetectVictory;
 import game.demineur.items.Case;
 import game.demineur.items.Chrono;
 import game.demineur.utils.GameConstants;
@@ -36,6 +37,7 @@ public class GameWindow {
 	private JFrame frmDmineur;
 	private final Action action = new SwingAction();
 	private final Action action_1 = new SwingAction_1();
+	private final Action action_2 = new SwingAction_2();
 
 	public JFrame getFrame() {
 		return frmDmineur;
@@ -71,6 +73,7 @@ public class GameWindow {
 	 */
 	public GameWindow(int size) {
 		initialize(size);
+		DetectVictory.initialize(10);
 	}
 
 	/**
@@ -104,6 +107,10 @@ public class GameWindow {
 
 		JMenu mnDmineur = new JMenu("D\u00E9mineur");
 		menuBar.add(mnDmineur);
+
+		JMenuItem mntmQuitter = new JMenuItem("Quitter");
+		mntmQuitter.setAction(action_2);
+		mnDmineur.add(mntmQuitter);
 
 		JMenu mnPartie = new JMenu("Partie");
 		menuBar.add(mnPartie);
@@ -156,10 +163,10 @@ public class GameWindow {
 		cTimePane.gridy = 0;
 		frmDmineur.getContentPane().add(timePanel, cTimePane);
 
-		addComponents(gamePane);
+		addComponents(gamePane, timer);
 	}
 
-	public void addComponents(JPanel gamePane) {
+	public void addComponents(JPanel gamePane, Chrono timer) {
 		GridBagLayout gridBagLayout1 = new GridBagLayout();
 		gridBagLayout1.columnWidths = new int[] { 0, 0 };
 		gridBagLayout1.rowHeights = new int[] { 0, 0 };
@@ -175,7 +182,7 @@ public class GameWindow {
 			for (int j = 0; j < 9; j++) {
 				int neighboor = MineUtils.giveNeighbourNumber(MineUtils.generateCoordonneesVoisines(i, j), arrayCases);
 
-				aX = new Case(neighboor, new Coordonnees(i, j), arrayCases);
+				aX = new Case(neighboor, new Coordonnees(i, j), arrayCases, timer);
 
 				aX.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				GridBagConstraints cAX = new GridBagConstraints();
@@ -274,6 +281,19 @@ public class GameWindow {
 			getFrame().dispose();
 			GameWindow newWindow = new GameWindow(9);
 			newWindow.getFrame().setVisible(true);
+		}
+	}
+
+	@SuppressWarnings("serial")
+	private class SwingAction_2 extends AbstractAction {
+		public SwingAction_2() {
+			putValue(NAME, "Quitter");
+			putValue(SHORT_DESCRIPTION, "Quitter le jeu");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.exit(0);
 		}
 	}
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
 
+import game.demineur.endIt.DetectVictory;
 import game.demineur.utils.ImagesSettings;
 import game.demineur.utils.Path;
 import game.library.Coordonnees;
@@ -13,7 +14,7 @@ import game.library.MineUtils;
 
 @SuppressWarnings("serial")
 public class Case extends CaseItem {
-	public Case(int neighboor, Coordonnees position, ArrayList<Coordonnees> arrayCases) {
+	public Case(int neighboor, Coordonnees position, ArrayList<Coordonnees> arrayCases, Chrono timer) {
 		super(neighboor, position, arrayCases);
 		resize();
 
@@ -24,9 +25,18 @@ public class Case extends CaseItem {
 					if (getStatus() == CaseItem.CASE && !isDiscovered()) {
 						setStatus(CaseItem.FLAG);
 						changeToFlag();
+
+						if (getState() == CaseItem.EXPLOSIVE) {
+							DetectVictory.addAFlaggedBomb(timer);
+						}
+
 					} else if (getStatus() == CaseItem.FLAG) {
 						resize();
 						setDiscovered(false);
+
+						if (getState() == CaseItem.EXPLOSIVE) {
+							DetectVictory.removeAFlaggedBomb();
+						}
 					}
 
 				} else if (SwingUtilities.isLeftMouseButton(e) && getStatus() == CaseItem.CASE && !isDiscovered()) {
@@ -35,7 +45,7 @@ public class Case extends CaseItem {
 					if (getState() == CaseItem.EXPLOSIVE) {
 						setStatus(CaseItem.BOMB);
 						changeToBomb(true);
-						booom.DestroyAllBombs(getPosition());
+						booom.defeat(timer);
 					} else if (getState() == CaseItem.SAFE) {
 						setStatus(CaseItem.NUMBER);
 						changeToNumber(neighboor);

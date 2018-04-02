@@ -12,6 +12,7 @@ import javax.swing.border.EmptyBorder;
 public class Chrono extends JLabel {
 	private static int heure = 0, minute = 0, seconde = 0;
 	private static Timer chronometer;
+	private static String timeText;
 
 	public Chrono() {
 		int delais = 1000;
@@ -76,6 +77,7 @@ public class Chrono extends JLabel {
 	private void modifyText() {
 		String text = "<html> <Font size = \"5\" color = \"white\">" + heure + ":" + minute + ":" + seconde
 				+ "</font> </html>";
+		this.setTimeText(text);
 		this.setText(text);
 	}
 
@@ -85,5 +87,20 @@ public class Chrono extends JLabel {
 
 	public void stopTimer() {
 		chronometer.stop();
+	}
+
+	/**
+	 * @return the timeText
+	 */
+	public static String getTimeText() {
+		return timeText;
+	}
+
+	/**
+	 * @param timeText
+	 *            the timeText to set
+	 */
+	private void setTimeText(String timeText) {
+		Chrono.timeText = timeText;
 	}
 }

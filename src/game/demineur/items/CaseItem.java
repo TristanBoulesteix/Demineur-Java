@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import game.demineur.data.endTheGame;
+import game.demineur.endIt.endTheGame;
 import game.demineur.utils.ImagesSettings;
 import game.demineur.utils.Path;
 import game.library.Coordonnees;
@@ -87,6 +87,7 @@ abstract class CaseItem extends JLabel {
 		ImagesSettings setImage = new ImagesSettings();
 		setImage.displayImage(this, Path.FLAG_PICTURE, 25, 25);
 		setDiscovered(true);
+
 	}
 
 	/**

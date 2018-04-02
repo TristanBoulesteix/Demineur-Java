@@ -16,6 +16,10 @@ public class Popup {
 		JOptionPane.showMessageDialog(null, "Défaite", "Défaite", JOptionPane.INFORMATION_MESSAGE);
 	}
 
+	public static void victoryPopup() {
+		JOptionPane.showMessageDialog(null, "Victoire !", "Vous avez gagné !", JOptionPane.INFORMATION_MESSAGE);
+	}
+
 	public static String needToCreateNewProfil() {
 		String nom = JOptionPane.showInputDialog(null,
 				"Vous n'avez pas encore de profil enregistré. Écrivez votre nom.", "Nouveau profil",

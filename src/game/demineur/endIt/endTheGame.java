@@ -1,4 +1,4 @@
-package game.demineur.data;
+package game.demineur.endIt;
 
 import java.io.IOException;
 
@@ -9,20 +9,27 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import game.demineur.items.Case;
+import game.demineur.items.Chrono;
 import game.demineur.popup.Popup;
 import game.demineur.utils.Path;
-import game.library.Coordonnees;
 import game.library.MineUtils;
 
 public class endTheGame {
-	public void DestroyAllBombs(Coordonnees firstBomb) {
+	public void defeat(Chrono timer) {
+		timer.stopTimer();
 		playExplosion();
 		discoverEverything();
 		Popup.defeatPopup();
 
 	}
 
-	public void discoverEverything() {
+	public static void victory(Chrono timer) {
+		timer.stopTimer();
+		discoverEverything();
+		Popup.victoryPopup();
+	}
+
+	public static void discoverEverything() {
 		Case[][] list = MineUtils.getCaseList();
 
 		for (int i = 0; i < list.length; i++) {
