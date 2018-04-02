@@ -236,7 +236,7 @@ public class GameWindow {
 
 		for (int i = 0; i < arrayOfcoordinates.size(); i++) {
 			if (arrayOfcoordinates.get(i).equals(coor)) {
-				exist = false;
+				exist = true;
 				break;
 			}
 		}

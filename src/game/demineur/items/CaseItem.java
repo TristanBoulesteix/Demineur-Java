@@ -66,10 +66,20 @@ abstract class CaseItem extends JLabel {
 
 	/**
 	 * Change a case to a bomb
+	 * 
+	 * @param needTo
 	 */
-	public void changeToBomb() {
+	public void changeToBomb(boolean bombIsNotDefused) {
+		String pathPicture;
+
+		if (bombIsNotDefused) {
+			pathPicture = Path.BOMB_PICTURE;
+		} else {
+			pathPicture = Path.DEFUSED_BOMB_PICTURE;
+		}
+
 		ImagesSettings setImage = new ImagesSettings();
-		setImage.displayImage(this, Path.BOMB_PICTURE, 25, 25);
+		setImage.displayImage(this, pathPicture, 25, 25);
 		setDiscovered(true);
 	}
 
@@ -96,6 +106,25 @@ abstract class CaseItem extends JLabel {
 			this.setVerticalAlignment(SwingConstants.CENTER);
 			String number = String.valueOf(numberOfNeighboor);
 			this.setText(number);
+
+			switch (numberOfNeighboor) {
+			case 1:
+				this.setForeground(new Color(0, 156, 253));
+				break;
+
+			case 2:
+				this.setForeground(new Color(0, 192, 0));
+				break;
+
+			case 3:
+				this.setForeground(new Color(254, 162, 1));
+				break;
+
+			default:
+				this.setForeground(new Color(255, 0, 0));
+				break;
+			}
+
 		}
 
 		setDiscovered(true);

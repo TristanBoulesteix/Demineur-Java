@@ -70,42 +70,47 @@ public class MineUtils {
 
 	public static int giveNeighbourNumber(Coordonnees[] arrayCoor, ArrayList<Coordonnees> arrayCases) {
 		int numberOfNeighboor = 0;
-		arrayCoor = removeNegativeCoordonnees(arrayCoor);
 
 		for (int i = 0; i < arrayCoor.length; i++) {
-			if (isABomb(arrayCoor[i].getOrdonnees(), arrayCoor[i].getAbscisse(), arrayCases)) {
-				numberOfNeighboor++;
+			if (!isOutOfBound(arrayCoor[i])) {
+				if (isABomb(arrayCoor[i].getOrdonnees(), arrayCoor[i].getAbscisse(), arrayCases)) {
+					numberOfNeighboor++;
+				}
 			}
 		}
 
 		return numberOfNeighboor;
 	}
 
-	public static Coordonnees[] removeNegativeCoordonnees(Coordonnees[] coor) {
-		for (int i = 0; i < coor.length; i++) {
-			if (coor[i].getAbscisse() < 0 || coor[i].getOrdonnees() < 0) {
-				coor[i] = new Coordonnees(10, 10);
-			}
-		}
-
-		return coor;
-	}
-
 	public static void revealEmptyCaseAdjacent(Coordonnees position) {
 		Case[][] listeDesCases = getCaseList();
 		Coordonnees[] neighboor = generateCoordonneesVoisines(position.getAbscisse(), position.getOrdonnees());
-		neighboor = removeNegativeCoordonnees(neighboor);
 
 		for (int i = 0; i < neighboor.length; i++) {
-			System.out.println(listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()]);
+			if (!isOutOfBound(neighboor[i])) {
+				if ((listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()].getState() == Case.SAFE)
+						&& !(listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()].isDiscovered())) {
 
-			if ((listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()].getState() == Case.SAFE)
-					&& !(listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()].isDiscovered())
-					&& (listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()]
-							.getNumberOfExplosiveNeighboor() == 0)) {
-				listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()].changeToNumber(0);
+					// Action of If
+					listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()]
+							.changeToNumber(listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()]
+									.getNumberOfExplosiveNeighboor());
+
+					if (listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()]
+							.getNumberOfExplosiveNeighboor() == 0) {
+						revealEmptyCaseAdjacent(
+								listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()].getPosition());
+					}
+				}
 			}
 		}
+	}
 
+	public static boolean isOutOfBound(Coordonnees coor) {
+		if (coor.isNegative() || coor.getAbscisse() >= 9 || coor.getOrdonnees() >= 9) {
+			return true;
+		}
+
+		return false;
 	}
 }

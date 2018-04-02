@@ -31,10 +31,12 @@ public class endTheGame {
 
 				if (!c.isDiscovered()) {
 					if (c.getState() == Case.EXPLOSIVE) {
-						c.changeToBomb();
+						c.changeToBomb(true);
 					} else if (c.getState() == Case.SAFE) {
 						c.changeToNumber(c.getNumberOfExplosiveNeighboor());
 					}
+				} else if (c.getStatus() == Case.FLAG && c.getState() == Case.EXPLOSIVE) {
+					c.changeToBomb(false);
 				}
 			}
 		}

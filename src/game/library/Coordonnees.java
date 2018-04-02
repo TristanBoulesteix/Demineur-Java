@@ -4,9 +4,22 @@ public class Coordonnees {
 	private int ordonnee;
 	private int abscisse;
 
+	private boolean negative = false;
+
+	/**
+	 * @return if abscisse or ordonnees are negative
+	 */
+	public boolean isNegative() {
+		return negative;
+	}
+
 	public Coordonnees(int i, int j) {
 		setAbscisse(i);
 		setOrdonnees(j);
+
+		if (getAbscisse() < 0 || getOrdonnees() < 0) {
+			negative = true;
+		}
 	}
 
 	/**
@@ -44,6 +57,11 @@ public class Coordonnees {
 		StringBuilder sb = new StringBuilder();
 		sb.append("x = ").append(abscisse);
 		sb.append(", y = ").append(ordonnee);
+
+		if (isNegative()) {
+			sb.append(", negative");
+		}
+
 		return sb.toString();
 	}
 
