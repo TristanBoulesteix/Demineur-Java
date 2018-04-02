@@ -35,6 +35,7 @@ public class GameWindow {
 
 	private JFrame frmDmineur;
 	private final Action action = new SwingAction();
+	private final Action action_1 = new SwingAction_1();
 
 	public JFrame getFrame() {
 		return frmDmineur;
@@ -106,6 +107,10 @@ public class GameWindow {
 
 		JMenu mnPartie = new JMenu("Partie");
 		menuBar.add(mnPartie);
+
+		JMenuItem mntmRejouer = new JMenuItem("Rejouer");
+		mntmRejouer.setAction(action_1);
+		mnPartie.add(mntmRejouer);
 
 		JMenu mnAPropos = new JMenu("A propos");
 		menuBar.add(mnAPropos);
@@ -254,6 +259,21 @@ public class GameWindow {
 		public void actionPerformed(ActionEvent e) {
 			JOptionPane.showMessageDialog(null, "Tristan BOULESTEIX\nÉtudiant à l'Exia.CESI", "About me",
 					JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+
+	@SuppressWarnings("serial")
+	private class SwingAction_1 extends AbstractAction {
+		public SwingAction_1() {
+			putValue(NAME, "Nouvelle partie");
+			putValue(SHORT_DESCRIPTION, "Rejouer");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			getFrame().dispose();
+			GameWindow newWindow = new GameWindow(9);
+			newWindow.getFrame().setVisible(true);
 		}
 	}
 }
