@@ -84,9 +84,9 @@ public class Popup {
 	}
 
 	public static boolean askForRestartFromPopup() {
-		int choice = JOptionPane.showConfirmDialog(null, "Redémarrage nécessaire",
+		int choice = JOptionPane.showConfirmDialog(null,
 				"Pour changer de profil, l'application de se redémarrer. Voulez-vous continuer ?",
-				JOptionPane.OK_CANCEL_OPTION);
+				"Redémarrage nécessaire", JOptionPane.OK_CANCEL_OPTION);
 
 		if (choice == JOptionPane.OK_OPTION) {
 			return true;
@@ -98,5 +98,11 @@ public class Popup {
 	public static void errorSettingPopup(String errorMessage) {
 		JOptionPane.showMessageDialog(null, "Erreur de mise à jour des paramètres", errorMessage,
 				JOptionPane.ERROR_MESSAGE);
+	}
+
+	public static String selectProfileToDelete(String[] profileList) {
+		String toDelete = (String) JOptionPane.showInputDialog(null, "Veuillez sélectionner un profil à supprimer.",
+				"Supprimer un profil", JOptionPane.QUESTION_MESSAGE, null, profileList, profileList[0]);
+		return toDelete;
 	}
 }

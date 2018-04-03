@@ -42,6 +42,7 @@ public class MainMenuWindow {
 
 	private String[] settingData = new String[3];
 	private final Action action_5 = new SwingAction_5();
+	private final Action action_6 = new SwingAction_6();
 
 	public JFrame getFrmMenu() {
 		return frmMenu;
@@ -92,6 +93,7 @@ public class MainMenuWindow {
 		mnProfils.add(mntmNouveauProfil);
 
 		JMenuItem mntmSupprimerUnProfil = new JMenuItem("Supprimer un profil");
+		mntmSupprimerUnProfil.setAction(action_6);
 		mnProfils.add(mntmSupprimerUnProfil);
 
 		JSeparator separator_2 = new JSeparator();
@@ -171,7 +173,7 @@ public class MainMenuWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			frmMenu.dispose();
+			frmMenu.setVisible(false);
 			LaunchGame game = new LaunchGame();
 			game.newGame(settingData, settings);
 		}
@@ -225,7 +227,9 @@ public class MainMenuWindow {
 		public void actionPerformed(ActionEvent e) {
 			SettingPopup parametre = new SettingPopup(null, "Paramètre", true, settings);
 			settingData = parametre.showSettingPopup();
-			updateSettingData();
+			if (settingData[0] != null && settingData[1] != null && settingData[2] != null) {
+				updateSettingData();
+			}
 
 		}
 	}
@@ -275,6 +279,37 @@ public class MainMenuWindow {
 				SettingsUtils.addNewProfile(profileName, settings, true);
 				Restart restart = new Restart();
 				restart.restartApplication();
+			}
+		}
+	}
+
+	@SuppressWarnings("serial")
+	private class SwingAction_6 extends AbstractAction {
+		public SwingAction_6() {
+			putValue(NAME, "Supprimer un profil");
+			putValue(SHORT_DESCRIPTION, "Supprimer les données d'un profil");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			boolean confirmed = Popup.askForRestart();
+
+			if (confirmed) {
+				File[] listOfFiles = new File(Path.PROFIL_PATH).listFiles();
+				int numberOfFiles = listOfFiles.length;
+				String[] listOfProfileName = new String[numberOfFiles - 1];
+
+				for (int i = 0; i < numberOfFiles; i++) {
+					if (!listOfFiles[i].getName().equals(settingData[0])) {
+						listOfProfileName[i] = listOfFiles[i].getName();
+					}
+				}
+
+				String toDelete = Popup.selectProfileToDelete(listOfProfileName);
+
+				if (toDelete != null) {
+					SettingsUtils.deleteProfile(toDelete, settings);
+				}
 			}
 		}
 	}

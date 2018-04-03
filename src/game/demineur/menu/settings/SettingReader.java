@@ -24,6 +24,7 @@ public class SettingReader {
 	private String profilName, score, defaultGridSize, defaultColorGrid;
 
 	private Wini iniPath = null;
+	@SuppressWarnings("unused")
 	private Wini iniDefaultSetting;
 	private Wini iniSettings;
 
@@ -49,9 +50,9 @@ public class SettingReader {
 				profilName = tempProfilName;
 			}
 
-			score = iniDefaultSetting.get("User informations", "Best score");
-			defaultGridSize = iniDefaultSetting.get("Game settings", "Default grid");
-			defaultColorGrid = iniDefaultSetting.get("Game settings", "Color grid");
+			score = iniSettings.get("User informations", "Best score");
+			defaultGridSize = iniSettings.get("Game settings", "Default grid");
+			defaultColorGrid = iniSettings.get("Game settings", "Color grid");
 
 		} catch (InvalidFileFormatException e) {
 			e.printStackTrace();

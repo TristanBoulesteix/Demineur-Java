@@ -20,7 +20,6 @@ import javax.swing.JRadioButton;
 public class SettingPopup extends JDialog {
 	// Données de la popup
 	private SettingReader settings;
-	private String globalSetting, profil, gridSize;
 
 	// Éléments de la popup
 	private String[] settingList = new String[3];

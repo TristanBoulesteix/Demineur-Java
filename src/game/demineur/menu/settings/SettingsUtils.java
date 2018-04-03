@@ -77,17 +77,27 @@ public class SettingsUtils {
 		settings.updateProfilNameINI(newProfileName);
 	}
 
+	public static void deleteProfile(String toDelete, SettingReader settings) {
+		File profileFile = new File(Path.PROFIL_PATH + toDelete);
+		profileFile.delete();
+	}
+
 	public static void changeProfile(String newProfileName, SettingReader settings) {
 		if (settings.getProfilName().equals(newProfileName)) {
 			return;
 		} else if (Popup.askForRestartFromPopup()) {
 			if (newProfileName.equals("Ajouter un profil")) {
-				addNewProfile(newProfileName, settings, false);
+				String name = Popup.addNewProfile();
+
+				if (name != null) {
+					addNewProfile(name, settings, false);
+				}
 			} else {
 				settings.updateProfilNameINI(newProfileName);
-				Restart restart = new Restart();
-				restart.restartApplication();
 			}
+
+			Restart restart = new Restart();
+			restart.restartApplication();
 		}
 	}
 
