@@ -217,7 +217,7 @@ public class GameWindow {
 			break;
 
 		case "Rouge":
-			path = Path.GREY_CUBE;
+			path = Path.RED_CUBE;
 			break;
 
 		default:
