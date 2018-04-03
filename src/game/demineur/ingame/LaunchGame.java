@@ -1,18 +1,30 @@
 package game.demineur.ingame;
 
-public class LaunchGame {
-	public void newGame(String gridSize) {
-		int size = 9;
+import game.demineur.menu.settings.SettingReader;
 
-		if (gridSize.equals("9x9")) {
+public class LaunchGame {
+	public void newGame(String[] settingData, SettingReader settings) {
+		int size;
+
+		switch (settingData[1]) {
+		case "9x9":
 			size = 9;
-		} else if (gridSize.equals("16x16")) {
+			break;
+
+		case "16x16":
 			size = 16;
-		} else if (gridSize.equals("30x16")) {
+			break;
+
+		case "30x16":
 			size = 30;
+			break;
+
+		default:
+			size = 9;
+			break;
 		}
 
-		GameWindow window = new GameWindow(size);
+		GameWindow window = new GameWindow(settingData[0], size, settingData[2], settings);
 		window.getFrame().setVisible(true);
 	}
 }

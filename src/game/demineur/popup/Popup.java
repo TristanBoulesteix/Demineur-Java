@@ -82,4 +82,21 @@ public class Popup {
 			return true;
 		}
 	}
+
+	public static boolean askForRestartFromPopup() {
+		int choice = JOptionPane.showConfirmDialog(null, "Redémarrage nécessaire",
+				"Pour changer de profil, l'application de se redémarrer. Voulez-vous continuer ?",
+				JOptionPane.OK_CANCEL_OPTION);
+
+		if (choice == JOptionPane.OK_OPTION) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public static void errorSettingPopup(String errorMessage) {
+		JOptionPane.showMessageDialog(null, "Erreur de mise à jour des paramètres", errorMessage,
+				JOptionPane.ERROR_MESSAGE);
+	}
 }

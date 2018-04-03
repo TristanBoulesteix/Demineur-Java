@@ -2,7 +2,6 @@ package game.demineur.ingame;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
@@ -22,8 +21,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import game.demineur.endIt.DetectVictory;
+import game.demineur.endIt.endTheGame;
 import game.demineur.items.Case;
 import game.demineur.items.Chrono;
+import game.demineur.menu.settings.SettingReader;
 import game.demineur.utils.GameConstants;
 import game.demineur.utils.Path;
 import game.library.Coordonnees;
@@ -33,6 +34,10 @@ public class GameWindow {
 	public final int TAILLE_X = 800;
 	public final int TAILLE_Y = 600;
 	public final Dimension TAILLE_DEFAULT = new Dimension(TAILLE_X, TAILLE_Y);
+
+	private String profileName, colorGrid;
+	private int size;
+	private SettingReader settings;
 
 	private JFrame frmDmineur;
 	private final Action action = new SwingAction();
@@ -50,38 +55,30 @@ public class GameWindow {
 	}
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					GameWindow window = new GameWindow(9);
-					window.getFrame().setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 * 
+	 * @param profilName
 	 * @param size
+	 * @param gridColor
+	 * @param settings
 	 */
-	public GameWindow(int size) {
-		initialize(size);
+	public GameWindow(String profilName, int size, String gridColor, SettingReader settings) {
+		this.settings = settings;
+		this.profileName = profilName;
+		this.colorGrid = gridColor;
+		this.size = size;
+		endTheGame.initialize(settings, profilName);
 		DetectVictory.initialize(10);
+		initialize(size, gridColor);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 * 
 	 * @param size
+	 * @param gridColor
 	 */
-	void initialize(int size) {
+	void initialize(int size, String gridColor) {
 		setFrame(new JFrame());
 		getFrame().setBounds(100, 100, TAILLE_X, TAILLE_Y);
 		getFrame().setMinimumSize(TAILLE_DEFAULT);
@@ -176,13 +173,15 @@ public class GameWindow {
 
 		Case aX;
 
+		String colorPath = setCasesColorPicturePath();
+
 		ArrayList<Coordonnees> arrayCases = chooseRandomPlaceToBombs(9);
 
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				int neighboor = MineUtils.giveNeighbourNumber(MineUtils.generateCoordonneesVoisines(i, j), arrayCases);
 
-				aX = new Case(neighboor, new Coordonnees(i, j), arrayCases, timer);
+				aX = new Case(neighboor, new Coordonnees(i, j), arrayCases, timer, colorPath);
 
 				aX.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				GridBagConstraints cAX = new GridBagConstraints();
@@ -201,7 +200,34 @@ public class GameWindow {
 		placeBombs(arrayCases);
 	}
 
-	public void placeBombs(ArrayList<Coordonnees> coordinatesOfBombs) {
+	private String setCasesColorPicturePath() {
+		String path;
+
+		switch (colorGrid) {
+		case "Gris":
+			path = Path.GREY_CUBE;
+			break;
+
+		case "Bleu":
+			path = Path.BLUE_CUBE;
+			break;
+
+		case "Vert":
+			path = Path.GREEN_CUBE;
+			break;
+
+		case "Rouge":
+			path = Path.GREY_CUBE;
+			break;
+
+		default:
+			path = Path.GREY_CUBE;
+		}
+
+		return path;
+	}
+
+	private void placeBombs(ArrayList<Coordonnees> coordinatesOfBombs) {
 		Case[][] casesList = MineUtils.getCaseList();
 
 		for (int i = 0; i < casesList.length; i++) {
@@ -215,7 +241,7 @@ public class GameWindow {
 		}
 	}
 
-	public ArrayList<Coordonnees> chooseRandomPlaceToBombs(int maxSize) {
+	private ArrayList<Coordonnees> chooseRandomPlaceToBombs(int maxSize) {
 		ArrayList<Coordonnees> arrayOfcoordinates = new ArrayList<>();
 
 		if (maxSize == 9) {
@@ -238,12 +264,12 @@ public class GameWindow {
 		return arrayOfcoordinates;
 	}
 
-	public int randomBetween(int min, int max) {
+	private int randomBetween(int min, int max) {
 		int randomNumber = (int) (Math.random() * (max - min));
 		return randomNumber;
 	}
 
-	public boolean isAlreadyExistant(ArrayList<Coordonnees> arrayOfcoordinates, Coordonnees coor) {
+	private boolean isAlreadyExistant(ArrayList<Coordonnees> arrayOfcoordinates, Coordonnees coor) {
 		boolean exist = false;
 
 		for (int i = 0; i < arrayOfcoordinates.size(); i++) {
@@ -279,7 +305,7 @@ public class GameWindow {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			getFrame().dispose();
-			GameWindow newWindow = new GameWindow(9);
+			GameWindow newWindow = new GameWindow(profileName, size, colorGrid, settings);
 			newWindow.getFrame().setVisible(true);
 		}
 	}

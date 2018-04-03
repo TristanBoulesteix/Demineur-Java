@@ -10,11 +10,20 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import game.demineur.items.Case;
 import game.demineur.items.Chrono;
+import game.demineur.menu.settings.SettingReader;
 import game.demineur.popup.Popup;
 import game.demineur.utils.Path;
 import game.library.MineUtils;
 
 public class endTheGame {
+	private static SettingReader settings;
+	private static String profileName;
+
+	public static void initialize(SettingReader settings, String currentProfile) {
+		endTheGame.settings = settings;
+		endTheGame.profileName = currentProfile;
+	}
+
 	public void defeat(Chrono timer) {
 		timer.stopTimer();
 		playExplosion();

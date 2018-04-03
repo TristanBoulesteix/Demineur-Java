@@ -8,14 +8,14 @@ import javax.swing.SwingUtilities;
 
 import game.demineur.endIt.DetectVictory;
 import game.demineur.utils.ImagesSettings;
-import game.demineur.utils.Path;
 import game.library.Coordonnees;
 import game.library.MineUtils;
 
 @SuppressWarnings("serial")
 public class Case extends CaseItem {
-	public Case(int neighboor, Coordonnees position, ArrayList<Coordonnees> arrayCases, Chrono timer) {
-		super(neighboor, position, arrayCases);
+	public Case(int neighboor, Coordonnees position, ArrayList<Coordonnees> arrayCases, Chrono timer,
+			String colorPath) {
+		super(neighboor, position, arrayCases, colorPath);
 		resize();
 
 		this.addMouseListener(new MouseAdapter() {
@@ -62,7 +62,7 @@ public class Case extends CaseItem {
 	public void resize() {
 		setStatus(CaseItem.CASE);
 		ImagesSettings resize = new ImagesSettings();
-		resize.displayImage(this, Path.DEFAULT_CUBE_PICTURE, 25, 25);
+		resize.displayImage(this, path, 25, 25);
 	}
 
 }

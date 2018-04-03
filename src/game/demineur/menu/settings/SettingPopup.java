@@ -74,21 +74,24 @@ public class SettingPopup extends JDialog {
 		gridSize.add(profilListBox2);
 		gridSize.add(profilListBox3);
 
-		JPanel othersSettings = new JPanel();
-		othersSettings.setBackground(Color.white);
-		othersSettings.setPreferredSize(new Dimension(440, 60));
-		othersSettings.setBorder(BorderFactory.createTitledBorder("Paramètre du jeu"));
+		JPanel colorGridSettings = new JPanel();
+		colorGridSettings.setBackground(Color.white);
+		colorGridSettings.setPreferredSize(new Dimension(440, 60));
+		colorGridSettings.setBorder(BorderFactory.createTitledBorder("Couleur de la grille"));
 		globalSettingsChoice = new JComboBox<String>();
-		globalSettingsChoice.addItem("Aucune option");
+		globalSettingsChoice.addItem("Gris");
+		globalSettingsChoice.addItem("Bleu");
+		globalSettingsChoice.addItem("Vert");
+		globalSettingsChoice.addItem("Rouge");
 		generalSettingsLabel = new JLabel("");
-		othersSettings.add(generalSettingsLabel);
-		othersSettings.add(globalSettingsChoice);
+		colorGridSettings.add(generalSettingsLabel);
+		colorGridSettings.add(globalSettingsChoice);
 
 		JPanel content = new JPanel();
 		content.setBackground(Color.white);
 		content.add(profilPan);
 		content.add(gridSize);
-		content.add(othersSettings);
+		content.add(colorGridSettings);
 
 		JPanel control = new JPanel();
 		JButton okBouton = new JButton("OK");

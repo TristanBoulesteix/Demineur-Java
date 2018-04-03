@@ -21,7 +21,7 @@ public class SettingReader {
 	private final File settingPathFile = new File(Path.DEFAULT_PATH_INI);
 
 	private String pathOfSettings;
-	private String profilName, score, defaultGridSize;
+	private String profilName, score, defaultGridSize, defaultColorGrid;
 
 	private Wini iniPath = null;
 	private Wini iniDefaultSetting;
@@ -44,13 +44,14 @@ public class SettingReader {
 
 			if (tempProfilName.equals("Guest")) {
 				profilName = Popup.needToCreateNewProfil();
-				SettingsUtils.addNewProfile(profilName, this);
+				SettingsUtils.addNewProfile(profilName, this, true);
 			} else {
 				profilName = tempProfilName;
 			}
 
 			score = iniDefaultSetting.get("User informations", "Best score");
 			defaultGridSize = iniDefaultSetting.get("Game settings", "Default grid");
+			defaultColorGrid = iniDefaultSetting.get("Game settings", "Color grid");
 
 		} catch (InvalidFileFormatException e) {
 			e.printStackTrace();
@@ -86,6 +87,34 @@ public class SettingReader {
 			iniSettings = new Wini(settingFile);
 			iniSettings.put("User informations", "Nom", profilName);
 			iniSettings.store();
+
+			this.profilName = profilName;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void updateGridSizeINI(String gridSize) {
+		try {
+			iniSettings = new Wini(settingFile);
+			iniSettings.put("Game settings", "Default grid", gridSize);
+			iniSettings.store();
+
+			this.defaultGridSize = gridSize;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void updateColorINI(String colorName) {
+		try {
+			iniSettings = new Wini(settingFile);
+			iniSettings.put("Game settings", "Color grid", colorName);
+			iniSettings.store();
+
+			setDefaultColorGrid(colorName);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -175,5 +204,20 @@ public class SettingReader {
 	 */
 	public String getDefaultGridSize() {
 		return defaultGridSize;
+	}
+
+	/**
+	 * @return the defaultColorGrid
+	 */
+	public String getDefaultColorGrid() {
+		return defaultColorGrid;
+	}
+
+	/**
+	 * @param defaultColorGrid
+	 *            the defaultColorGrid to set
+	 */
+	public void setDefaultColorGrid(String defaultColorGrid) {
+		this.defaultColorGrid = defaultColorGrid;
 	}
 }

@@ -3,7 +3,6 @@ package game.demineur.menu;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -41,7 +40,7 @@ public class MainMenuWindow {
 
 	private SettingReader settings;
 
-	private String profilName, gridSize;
+	private String[] settingData = new String[3];
 	private final Action action_5 = new SwingAction_5();
 
 	public JFrame getFrmMenu() {
@@ -53,32 +52,11 @@ public class MainMenuWindow {
 		frmMenu.setIconImage(Toolkit.getDefaultToolkit().getImage(MainMenuWindow.class.getResource(Path.MENU_PICTURE)));
 	}
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					MainMenuWindow window = new MainMenuWindow();
-					window.getFrmMenu().setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
-	public MainMenuWindow() {
-		initialize();
-	}
-
 	public MainMenuWindow(SettingReader settings) {
 		this.settings = settings;
+		settingData[0] = this.settings.getProfilName();
+		settingData[1] = this.settings.getDefaultGridSize();
+		settingData[2] = this.settings.getDefaultColorGrid();
 		initialize();
 	}
 
@@ -104,7 +82,7 @@ public class MainMenuWindow {
 		JMenu mnListeDesProfils = new JMenu("Liste des profils");
 		mnProfils.add(mnListeDesProfils);
 
-		mnListeDesProfils = addListProfileToMenu(mnListeDesProfils, settings);
+		mnListeDesProfils = addListProfileToMenu(mnListeDesProfils);
 
 		JSeparator separator_1 = new JSeparator();
 		mnProfils.add(separator_1);
@@ -119,7 +97,7 @@ public class MainMenuWindow {
 		JSeparator separator_2 = new JSeparator();
 		mnProfils.add(separator_2);
 
-		JMenuItem mntmCurrentprofile = new JMenuItem(settings.getProfilName());
+		JMenuItem mntmCurrentprofile = new JMenuItem("profil actuel : " + settings.getProfilName());
 		mntmCurrentprofile.setEnabled(false);
 		mnProfils.add(mntmCurrentprofile);
 
@@ -195,7 +173,7 @@ public class MainMenuWindow {
 		public void actionPerformed(ActionEvent e) {
 			frmMenu.dispose();
 			LaunchGame game = new LaunchGame();
-			game.newGame(gridSize);
+			game.newGame(settingData, settings);
 		}
 	}
 
@@ -246,18 +224,20 @@ public class MainMenuWindow {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			SettingPopup parametre = new SettingPopup(null, "Paramètre", true, settings);
-			String[] settingData = parametre.showSettingPopup();
-			updateSettingData(settingData);
+			settingData = parametre.showSettingPopup();
+			updateSettingData();
 
 		}
 	}
 
-	protected void updateSettingData(String[] settingData) {
-		profilName = settingData[0];
-		gridSize = settingData[1];
+	protected void updateSettingData() {
+		SettingsUtils.changeProfile(settingData[0], settings);
+		SettingsUtils.changeGridSize(settingData[1], settings);
+		SettingsUtils.changeColorGrid(settingData[2], settings);
+
 	}
 
-	protected JMenu addListProfileToMenu(JMenu menuToUpdate, SettingReader settings) {
+	protected JMenu addListProfileToMenu(JMenu menuToUpdate) {
 		File profileDirectory = new File(Path.PROFIL_PATH);
 		File[] profilList = profileDirectory.listFiles();
 
@@ -292,7 +272,7 @@ public class MainMenuWindow {
 
 			if (confirmed) {
 				String profileName = Popup.addNewProfile();
-				SettingsUtils.addNewProfile(profileName, settings);
+				SettingsUtils.addNewProfile(profileName, settings, true);
 				Restart restart = new Restart();
 				restart.restartApplication();
 			}

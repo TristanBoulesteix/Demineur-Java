@@ -48,6 +48,8 @@ abstract class CaseItem extends JLabel {
 
 	protected ArrayList<Coordonnees> listOfAllBombs;
 
+	protected String path;
+
 	protected endTheGame booom = new endTheGame();
 
 	/**
@@ -55,12 +57,14 @@ abstract class CaseItem extends JLabel {
 	 *            de voisins
 	 * @param position
 	 * @param arrayCases
+	 * @param colorPath
 	 */
-	public CaseItem(int neighboors, Coordonnees position, ArrayList<Coordonnees> arrayCases) {
+	public CaseItem(int neighboors, Coordonnees position, ArrayList<Coordonnees> arrayCases, String colorPath) {
 		this.setPreferredSize(DIMENSION);
 		this.state = SAFE;
 		this.position = position;
 		this.listOfAllBombs = arrayCases;
+		this.path = colorPath;
 		setNumberOfExplosiveNeighboor(neighboors);
 	}
 
