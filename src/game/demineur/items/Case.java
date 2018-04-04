@@ -28,6 +28,8 @@ public class Case extends CaseItem {
 
 						if (getState() == CaseItem.EXPLOSIVE) {
 							DetectVictory.addAFlaggedBomb(timer);
+						} else {
+							DetectVictory.removeAFlaggedBomb();
 						}
 
 					} else if (getStatus() == CaseItem.FLAG) {
@@ -36,6 +38,8 @@ public class Case extends CaseItem {
 
 						if (getState() == CaseItem.EXPLOSIVE) {
 							DetectVictory.removeAFlaggedBomb();
+						} else {
+							DetectVictory.addAFlaggedBomb(timer);
 						}
 					}
 

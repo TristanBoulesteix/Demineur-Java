@@ -179,6 +179,21 @@ public class SettingReader {
 		}
 	}
 
+	public boolean setDefaultSettingsPath() {
+		boolean success = true;
+
+		try {
+			iniPath.put("Relative path", "Current_path", "Default path");
+			iniPath.put("Absolute path", "Current_absolute path", "null");
+			iniPath.store();
+		} catch (IOException e) {
+			e.printStackTrace();
+			success = false;
+		}
+
+		return success;
+	}
+
 	/**
 	 * @return the pathOfSettings
 	 */

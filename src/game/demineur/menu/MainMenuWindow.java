@@ -18,6 +18,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
+import javax.swing.JTextArea;
 
 import game.demineur.ingame.LaunchGame;
 import game.demineur.menu.settings.SettingPopup;
@@ -27,6 +28,7 @@ import game.demineur.popup.Popup;
 import game.demineur.utils.GameConstants;
 import game.demineur.utils.ImagesSettings;
 import game.demineur.utils.Path;
+import game.demineur.utils.Reset;
 import game.library.Restart;
 
 public class MainMenuWindow {
@@ -37,12 +39,13 @@ public class MainMenuWindow {
 	private final Action action_2 = new SwingAction_2();
 	private final Action action_3 = new SwingAction_3();
 	private final Action action_4 = new SwingAction_4();
+	private final Action action_5 = new SwingAction_5();
+	private final Action action_6 = new SwingAction_6();
+	private final Action action_7 = new SwingAction_7();
 
 	private SettingReader settings;
 
 	private String[] settingData = new String[3];
-	private final Action action_5 = new SwingAction_5();
-	private final Action action_6 = new SwingAction_6();
 
 	public JFrame getFrmMenu() {
 		return frmMenu;
@@ -107,6 +110,13 @@ public class MainMenuWindow {
 		mntmParamtres.setAction(action_4);
 		mnDmineur.add(mntmParamtres);
 
+		JSeparator separator_3 = new JSeparator();
+		mnDmineur.add(separator_3);
+
+		JMenuItem mntmRinitialiser = new JMenuItem("Réinitialiser");
+		mntmRinitialiser.setAction(action_7);
+		mnDmineur.add(mntmRinitialiser);
+
 		JMenuItem mntmQuitter = new JMenuItem("Quitter le jeu");
 		mnDmineur.add(mntmQuitter);
 
@@ -145,7 +155,9 @@ public class MainMenuWindow {
 		lblNewLabel = resizePicture.displayImage(lblNewLabel, Path.MENU_PICTURE, 280, 400);
 		frmMenu.getContentPane().add(lblNewLabel, BorderLayout.EAST);
 
-		JEditorPane txtpnPane = new JEditorPane();
+		JTextArea txtpnPane = new JTextArea();
+		txtpnPane.setWrapStyleWord(true);
+		txtpnPane.setLineWrap(true);
 		txtpnPane.setDisabledTextColor(Color.BLACK);
 		txtpnPane.setEnabled(false);
 		txtpnPane.setEditable(false);
@@ -175,7 +187,7 @@ public class MainMenuWindow {
 		public void actionPerformed(ActionEvent e) {
 			frmMenu.setVisible(false);
 			LaunchGame game = new LaunchGame();
-			game.newGame(settingData, settings);
+			game.newGame(settingData, settings, getFrmMenu());
 		}
 	}
 
@@ -250,7 +262,9 @@ public class MainMenuWindow {
 		} else if (profilList.length != 0) {
 			for (int i = 0; i < profilList.length; i++) {
 				if (!(profilList[i].getName().equals(settings.getProfilName()))) {
+					Action action_changeUser = new SwingAction_changeUser(profilList[i].getName());
 					JMenuItem menuItem = new JMenuItem(profilList[i].getName());
+					menuItem.setAction(action_changeUser);
 					menuToUpdate.add(menuItem);
 				}
 			}
@@ -311,6 +325,45 @@ public class MainMenuWindow {
 					SettingsUtils.deleteProfile(toDelete, settings);
 				}
 			}
+		}
+	}
+
+	@SuppressWarnings("serial")
+	private class SwingAction_7 extends AbstractAction {
+		public SwingAction_7() {
+			putValue(NAME, "Réinitialiser");
+			putValue(SHORT_DESCRIPTION, "Delete all files");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			boolean restartAllowed = Popup.askForRestart();
+			boolean allowReset = Popup.confirmReset();
+
+			if (restartAllowed && allowReset) {
+				@SuppressWarnings("unused")
+				Reset reset = new Reset(settings);
+
+				Restart restart = new Restart();
+				restart.restartApplication();
+			}
+		}
+	}
+
+	@SuppressWarnings("serial")
+	private class SwingAction_changeUser extends AbstractAction {
+		String profile;
+
+		public SwingAction_changeUser(String userName) {
+			putValue(NAME, userName);
+			putValue(SHORT_DESCRIPTION, "Changer d'utilisateur");
+
+			profile = userName;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			SettingsUtils.changeProfile(profile, settings);
 		}
 	}
 }

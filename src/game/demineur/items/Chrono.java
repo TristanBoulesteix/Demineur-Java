@@ -74,6 +74,13 @@ public class Chrono extends JLabel {
 		});
 	}
 
+	public void initialize() {
+		heure = 0;
+		minute = 0;
+		seconde = 0;
+		timeText = null;
+	}
+
 	private void modifyText() {
 		String text = "<html> <Font size = \"5\" color = \"white\">" + heure + ":" + minute + ":" + seconde
 				+ "</font> </html>";

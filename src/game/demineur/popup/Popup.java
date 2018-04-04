@@ -105,4 +105,46 @@ public class Popup {
 				"Supprimer un profil", JOptionPane.QUESTION_MESSAGE, null, profileList, profileList[0]);
 		return toDelete;
 	}
+
+	public static void errorWhenResetPopup() {
+		JOptionPane.showMessageDialog(null,
+				"Une erreur inconnue s'est produite. Certains fichiers n'ont pas été supprimés", "Erreur !",
+				JOptionPane.ERROR_MESSAGE);
+	}
+
+	public static boolean confirmReset() {
+		int choice = JOptionPane.showConfirmDialog(null,
+				"Attention ! Cette action va supprimer TOUS les fichiers de TOUS les profils.\nCela réinitialisera également les paramètres par défaut.",
+				"Réinitialiser", JOptionPane.OK_CANCEL_OPTION);
+
+		if (choice == JOptionPane.OK_OPTION) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public static boolean confirmGoBackToMenu() {
+		int choice = JOptionPane.showConfirmDialog(null,
+				"Attention ! Pour retourner au menu principal, la partie en cours va être considérée comme une défaite.\nÊtes-vous sûr de continuer ?",
+				"Retour au menu", JOptionPane.OK_CANCEL_OPTION);
+
+		if (choice == JOptionPane.OK_OPTION) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public static boolean confirmReplaceFile(String path) {
+		int choice = JOptionPane.showConfirmDialog(null,
+				"Le fichier " + path + " existe déjà. Voulez-vous le remplacer ?", "Enregistrer sous...",
+				JOptionPane.YES_NO_OPTION);
+
+		if (choice == JOptionPane.YES_OPTION) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

@@ -32,6 +32,12 @@ public class endTheGame {
 
 	}
 
+	public void finishGame(Chrono timer) {
+		timer.stopTimer();
+		discoverEverything();
+		Popup.defeatPopup();
+	}
+
 	public static void victory(Chrono timer) {
 		timer.stopTimer();
 		discoverEverything();

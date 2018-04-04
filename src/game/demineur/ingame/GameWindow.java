@@ -8,8 +8,12 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -25,10 +29,12 @@ import game.demineur.endIt.endTheGame;
 import game.demineur.items.Case;
 import game.demineur.items.Chrono;
 import game.demineur.menu.settings.SettingReader;
+import game.demineur.popup.Popup;
 import game.demineur.utils.GameConstants;
 import game.demineur.utils.Path;
 import game.library.Coordonnees;
 import game.library.MineUtils;
+import game.library.SaveAs;
 
 public class GameWindow {
 	public final int TAILLE_X = 800;
@@ -38,11 +44,15 @@ public class GameWindow {
 	private String profileName, colorGrid;
 	private int size;
 	private SettingReader settings;
+	private JFrame menuFrame;
+	private Chrono chronometer;
 
 	private JFrame frmDmineur;
 	private final Action action = new SwingAction();
 	private final Action action_1 = new SwingAction_1();
 	private final Action action_2 = new SwingAction_2();
+	private final Action action_3 = new SwingAction_3();
+	private final Action action_4 = new SwingAction_4();
 
 	public JFrame getFrame() {
 		return frmDmineur;
@@ -61,12 +71,14 @@ public class GameWindow {
 	 * @param size
 	 * @param gridColor
 	 * @param settings
+	 * @param menuFrame
 	 */
-	public GameWindow(String profilName, int size, String gridColor, SettingReader settings) {
+	public GameWindow(String profilName, int size, String gridColor, SettingReader settings, JFrame menuFrame) {
 		this.settings = settings;
 		this.profileName = profilName;
 		this.colorGrid = gridColor;
 		this.size = size;
+		this.menuFrame = menuFrame;
 		endTheGame.initialize(settings, profilName);
 		DetectVictory.initialize(10);
 		initialize(size, gridColor);
@@ -105,6 +117,10 @@ public class GameWindow {
 		JMenu mnDmineur = new JMenu("D\u00E9mineur");
 		menuBar.add(mnDmineur);
 
+		JMenuItem mntmMenuPrincipal = new JMenuItem("Menu principal");
+		mntmMenuPrincipal.setAction(action_3);
+		mnDmineur.add(mntmMenuPrincipal);
+
 		JMenuItem mntmQuitter = new JMenuItem("Quitter");
 		mntmQuitter.setAction(action_2);
 		mnDmineur.add(mntmQuitter);
@@ -115,6 +131,10 @@ public class GameWindow {
 		JMenuItem mntmRejouer = new JMenuItem("Rejouer");
 		mntmRejouer.setAction(action_1);
 		mnPartie.add(mntmRejouer);
+
+		JMenuItem mntmCaptureDcran = new JMenuItem("Capture d'écran");
+		mntmCaptureDcran.setAction(action_4);
+		mnPartie.add(mntmCaptureDcran);
 
 		JMenu mnAPropos = new JMenu("A propos");
 		menuBar.add(mnAPropos);
@@ -152,6 +172,8 @@ public class GameWindow {
 		timePanel.setPreferredSize(new Dimension(400, 400));
 		timePanel.setBackground(Color.BLACK);
 		Chrono timer = new Chrono();
+		timer.initialize();
+		chronometer = timer;
 		timer.startTimer();
 		timePanel.add(timer);
 		GridBagConstraints cTimePane = new GridBagConstraints();
@@ -305,7 +327,7 @@ public class GameWindow {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			getFrame().dispose();
-			GameWindow newWindow = new GameWindow(profileName, size, colorGrid, settings);
+			GameWindow newWindow = new GameWindow(profileName, size, colorGrid, settings, menuFrame);
 			newWindow.getFrame().setVisible(true);
 		}
 	}
@@ -320,6 +342,62 @@ public class GameWindow {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			System.exit(0);
+		}
+	}
+
+	@SuppressWarnings("serial")
+	private class SwingAction_3 extends AbstractAction {
+		public SwingAction_3() {
+			putValue(NAME, "Menu principal");
+			putValue(SHORT_DESCRIPTION, "Retour au menu");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			boolean allowExitGame = Popup.confirmGoBackToMenu();
+
+			if (allowExitGame) {
+				endTheGame end = new endTheGame();
+				end.finishGame(chronometer);
+				getFrame().dispose();
+				menuFrame.setVisible(true);
+			}
+		}
+	}
+
+	@SuppressWarnings("serial")
+	private class SwingAction_4 extends AbstractAction {
+		public SwingAction_4() {
+			putValue(NAME, "Capture d'écran");
+			putValue(SHORT_DESCRIPTION, "Effectuer une capture d'écran de la fenêtre actuelle.");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			boolean allowSavePicture = true;
+
+			BufferedImage capture = new BufferedImage(getFrame().getWidth(), getFrame().getHeight(),
+					BufferedImage.TYPE_INT_RGB);
+			getFrame().paint(capture.getGraphics());
+
+			chronometer.stopTimer();
+			SaveAs save = new SaveAs();
+			File pathToSave = save.SaveFile();
+
+			if (pathToSave.exists()) {
+				allowSavePicture = Popup.confirmReplaceFile(pathToSave.getName());
+			}
+
+			if (pathToSave != null || !allowSavePicture) {
+				try {
+					ImageIO.write(capture, "png", pathToSave);
+
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+
+			chronometer.startTimer();
 		}
 	}
 }

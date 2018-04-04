@@ -1,9 +1,11 @@
 package game.demineur.ingame;
 
+import javax.swing.JFrame;
+
 import game.demineur.menu.settings.SettingReader;
 
 public class LaunchGame {
-	public void newGame(String[] settingData, SettingReader settings) {
+	public void newGame(String[] settingData, SettingReader settings, JFrame menuFrame) {
 		int size;
 
 		switch (settingData[1]) {
@@ -24,7 +26,7 @@ public class LaunchGame {
 			break;
 		}
 
-		GameWindow window = new GameWindow(settingData[0], size, settingData[2], settings);
+		GameWindow window = new GameWindow(settingData[0], size, settingData[2], settings, menuFrame);
 		window.getFrame().setVisible(true);
 	}
 }
