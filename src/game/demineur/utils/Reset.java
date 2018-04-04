@@ -30,7 +30,7 @@ public class Reset {
 	}
 
 	private void deleteSettings(SettingReader settings) {
-		String path = Path.SETTINGS_PATH + "settings.ini";
+		String path = Path.SETTINGS_PATH + "setting.ini";
 		File file = new File(path);
 
 		file.delete();
