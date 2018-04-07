@@ -111,7 +111,7 @@ public class Popup {
 				JOptionPane.ERROR_MESSAGE);
 	}
 
-	public static String selectProfileToDelete(String[] profileList) {
+	public static String selectProfileToDelete(Object[] profileList) {
 		String toDelete = (String) JOptionPane.showInputDialog(null, "Veuillez sélectionner un profil à supprimer.",
 				"Supprimer un profil", JOptionPane.QUESTION_MESSAGE, null, profileList, profileList[0]);
 		return toDelete;

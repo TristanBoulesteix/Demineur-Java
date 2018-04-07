@@ -6,6 +6,7 @@ import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -97,6 +98,10 @@ public class MainMenuWindow {
 
 		JMenuItem mntmSupprimerUnProfil = new JMenuItem("Supprimer un profil");
 		mntmSupprimerUnProfil.setAction(action_6);
+		File file = new File(Path.PROFIL_PATH);
+		if (file.listFiles().length <= 1) {
+			mntmSupprimerUnProfil.setEnabled(false);
+		}
 		mnProfils.add(mntmSupprimerUnProfil);
 
 		JSeparator separator_2 = new JSeparator();
@@ -106,7 +111,7 @@ public class MainMenuWindow {
 		mntmCurrentprofile.setEnabled(false);
 		mnProfils.add(mntmCurrentprofile);
 
-		JMenuItem mntmParamtres = new JMenuItem("Param\u00E8tres");
+		JMenuItem mntmParamtres = new JMenuItem("Paramètres");
 		mntmParamtres.setAction(action_4);
 		mnDmineur.add(mntmParamtres);
 
@@ -123,7 +128,7 @@ public class MainMenuWindow {
 		JMenu mnAide = new JMenu("Aide");
 		menuBar.add(mnAide);
 
-		JMenuItem mntmRglesDuJeu = new JMenuItem("R\u00E8gles du jeu");
+		JMenuItem mntmRglesDuJeu = new JMenuItem("Règles du jeu");
 		mntmRglesDuJeu.setAction(action_3);
 		mnAide.add(mntmRglesDuJeu);
 
@@ -311,15 +316,17 @@ public class MainMenuWindow {
 			if (confirmed) {
 				File[] listOfFiles = new File(Path.PROFIL_PATH).listFiles();
 				int numberOfFiles = listOfFiles.length;
-				String[] listOfProfileName = new String[numberOfFiles - 1];
+				// String[] listOfProfileName = new String[numberOfFiles - 1];
+
+				ArrayList<String> listOfProfileName = new ArrayList<String>();
 
 				for (int i = 0; i < numberOfFiles; i++) {
 					if (!listOfFiles[i].getName().equals(settingData[0])) {
-						listOfProfileName[i] = listOfFiles[i].getName();
+						listOfProfileName.add(listOfFiles[i].getName());
 					}
 				}
 
-				String toDelete = Popup.selectProfileToDelete(listOfProfileName);
+				String toDelete = Popup.selectProfileToDelete(listOfProfileName.toArray());
 
 				if (toDelete != null) {
 					SettingsUtils.deleteProfile(toDelete, settings);

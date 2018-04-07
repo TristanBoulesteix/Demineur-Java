@@ -82,6 +82,7 @@ public class SettingPopup extends JDialog {
 		globalSettingsChoice.addItem("Bleu");
 		globalSettingsChoice.addItem("Vert");
 		globalSettingsChoice.addItem("Rouge");
+		globalSettingsChoice = SettingsUtils.selectColor(globalSettingsChoice, settings);
 		generalSettingsLabel = new JLabel("");
 		colorGridSettings.add(generalSettingsLabel);
 		colorGridSettings.add(globalSettingsChoice);

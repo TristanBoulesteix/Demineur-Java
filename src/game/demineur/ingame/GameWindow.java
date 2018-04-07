@@ -23,6 +23,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 
 import game.demineur.endIt.DetectVictory;
 import game.demineur.endIt.endTheGame;
@@ -132,6 +133,9 @@ public class GameWindow {
 		mntmRejouer.setAction(action_1);
 		mnPartie.add(mntmRejouer);
 
+		JSeparator separator = new JSeparator();
+		mnPartie.add(separator);
+
 		JMenuItem mntmCaptureDcran = new JMenuItem("Capture d'écran");
 		mntmCaptureDcran.setAction(action_4);
 		mnPartie.add(mntmCaptureDcran);
@@ -145,6 +149,9 @@ public class GameWindow {
 
 		JMenuItem mntmChangelog = new JMenuItem("Changelog");
 		mnAPropos.add(mntmChangelog);
+
+		JSeparator separator_1 = new JSeparator();
+		mnAPropos.add(separator_1);
 
 		JMenuItem mntmVersion = new JMenuItem("Version " + GameConstants.VERNUM);
 		mntmVersion.setEnabled(false);
@@ -382,18 +389,20 @@ public class GameWindow {
 
 			chronometer.stopTimer();
 			SaveAs save = new SaveAs();
-			File pathToSave = save.SaveFile();
+			File pathToSave = save.saveImageFile();
 
-			if (pathToSave.exists()) {
-				allowSavePicture = Popup.confirmReplaceFile(pathToSave.getName());
-			}
+			if (pathToSave != null) {
+				if (pathToSave.exists()) {
+					allowSavePicture = Popup.confirmReplaceFile(pathToSave.getName());
+				}
 
-			if (pathToSave != null || !allowSavePicture) {
-				try {
-					ImageIO.write(capture, "png", pathToSave);
+				if (allowSavePicture) {
+					try {
+						ImageIO.write(capture, "png", pathToSave);
 
-				} catch (IOException e1) {
-					e1.printStackTrace();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 

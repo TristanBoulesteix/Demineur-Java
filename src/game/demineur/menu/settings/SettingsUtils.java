@@ -55,6 +55,12 @@ public class SettingsUtils {
 		return group;
 	}
 
+	public static JComboBox<String> selectColor(JComboBox<String> globalSettingsChoice, SettingReader settings) {
+		globalSettingsChoice.setSelectedItem(settings.getDefaultColorGrid());
+
+		return globalSettingsChoice;
+	}
+
 	public static void addNewProfile(String newProfileName, SettingReader settings, boolean needConfirmPopup) {
 		File profileFile = new File(Path.PROFIL_PATH + newProfileName);
 

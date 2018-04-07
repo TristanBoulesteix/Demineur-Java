@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class SaveAs {
-	public File SaveFile() {
+	public File saveImageFile() {
 		File fileToSave = null;
 
 		JFrame parentFrame = new JFrame();
