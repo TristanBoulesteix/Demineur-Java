@@ -24,8 +24,10 @@ public class SaveAs {
 			fileToSave = fileChooser.getSelectedFile();
 		}
 
-		if (!fileToSave.getPath().toLowerCase().endsWith(".png")) {
-			fileToSave = new File(fileToSave.getPath() + ".png");
+		if (fileToSave != null) {
+			if (!fileToSave.getPath().toLowerCase().endsWith(".png")) {
+				fileToSave = new File(fileToSave.getPath() + ".png");
+			}
 		}
 
 		return fileToSave;

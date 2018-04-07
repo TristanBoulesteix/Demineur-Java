@@ -2,22 +2,33 @@ package game.demineur.popup;
 
 import javax.swing.JOptionPane;
 
+import game.demineur.endIt.EndGameText;
+
 public class Popup {
-	public static String askForGridSize() {
-		String[] choix = { "9x9", "16x16", "30x16" };
+	public static boolean defeatPopup(EndGameText text) {
+		boolean confirm = false;
 
-		String choice = (String) JOptionPane.showInputDialog(null, "Choisissez une taille de grille :",
-				"Nouvelle partie", JOptionPane.QUESTION_MESSAGE, null, choix, choix[0]);
+		int choice = JOptionPane.showConfirmDialog(null, text.getScrollBar(), "Défaite", JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE);
 
-		return choice;
+		if (choice == JOptionPane.OK_OPTION) {
+			confirm = true;
+		}
+
+		return confirm;
 	}
 
-	public static void defeatPopup() {
-		JOptionPane.showMessageDialog(null, "Défaite", "Défaite", JOptionPane.INFORMATION_MESSAGE);
-	}
+	public static boolean victoryPopup(EndGameText text) {
+		boolean confirm = false;
 
-	public static void victoryPopup() {
-		JOptionPane.showMessageDialog(null, "Victoire !", "Vous avez gagné !", JOptionPane.INFORMATION_MESSAGE);
+		int choice = JOptionPane.showConfirmDialog(null, text.getScrollBar(), "Victoire !", JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE);
+
+		if (choice == JOptionPane.OK_OPTION) {
+			confirm = true;
+		}
+
+		return confirm;
 	}
 
 	public static String needToCreateNewProfil() {

@@ -110,4 +110,10 @@ public class Chrono extends JLabel {
 	private void setTimeText(String timeText) {
 		Chrono.timeText = timeText;
 	}
+
+	public int[] getHeuresMinutesAndSecondes() {
+		int[] time = { heure, minute, seconde };
+
+		return time;
+	}
 }

@@ -203,7 +203,7 @@ public class GameWindow {
 			for (int j = 0; j < 9; j++) {
 				int neighboor = MineUtils.giveNeighbourNumber(MineUtils.generateCoordonneesVoisines(i, j), arrayCases);
 
-				aX = new Case(neighboor, new Coordonnees(i, j), arrayCases, timer, colorPath);
+				aX = new Case(neighboor, new Coordonnees(i, j), arrayCases, timer, colorPath, getFrame(), menuFrame);
 
 				aX.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				GridBagConstraints cAX = new GridBagConstraints();

@@ -7,7 +7,9 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.JFrame;
 
+import game.demineur.ingame.RestartGame;
 import game.demineur.items.Case;
 import game.demineur.items.Chrono;
 import game.demineur.menu.settings.SettingReader;
@@ -24,24 +26,47 @@ public class endTheGame {
 		endTheGame.profileName = currentProfile;
 	}
 
-	public void defeat(Chrono timer) {
+	public void defeat(Chrono timer, JFrame currentWindow, JFrame menu) {
 		timer.stopTimer();
 		playExplosion();
 		discoverEverything();
-		Popup.defeatPopup();
+
+		CalculTime calcTime = new CalculTime(profileName, timer.getHeuresMinutesAndSecondes(), false);
+		EndGameText text = new EndGameText(calcTime.getFiveShortTimes(), calcTime.getAllTimes(),
+				timer.getHeuresMinutesAndSecondes(), false);
+
+		boolean restart = Popup.defeatPopup(text);
+
+		if (restart) {
+			RestartGame newGame = new RestartGame(profileName, settings, currentWindow, menu);
+			newGame.startANewGame();
+		} else {
+			System.exit(0);
+		}
 
 	}
 
 	public void finishGame(Chrono timer) {
 		timer.stopTimer();
 		discoverEverything();
-		Popup.defeatPopup();
 	}
 
-	public static void victory(Chrono timer) {
+	public static void victory(Chrono timer, JFrame currentWindow, JFrame menu) {
 		timer.stopTimer();
+
+		CalculTime calcTime = new CalculTime(profileName, timer.getHeuresMinutesAndSecondes(), true);
+		EndGameText text = new EndGameText(calcTime.getFiveShortTimes(), calcTime.getAllTimes(),
+				timer.getHeuresMinutesAndSecondes(), true);
+
 		discoverEverything();
-		Popup.victoryPopup();
+		boolean restart = Popup.victoryPopup(text);
+
+		if (restart) {
+			RestartGame newGame = new RestartGame(profileName, settings, currentWindow, menu);
+			newGame.startANewGame();
+		} else {
+			System.exit(0);
+		}
 	}
 
 	public static void discoverEverything() {
@@ -62,7 +87,6 @@ public class endTheGame {
 				}
 			}
 		}
-
 	}
 
 	public void playExplosion() {

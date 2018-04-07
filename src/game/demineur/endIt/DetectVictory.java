@@ -1,5 +1,7 @@
 package game.demineur.endIt;
 
+import javax.swing.JFrame;
+
 import game.demineur.items.Chrono;
 
 public class DetectVictory {
@@ -41,18 +43,18 @@ public class DetectVictory {
 		setTotalOfBombs(numberOfBombs);
 	}
 
-	public static void addAFlaggedBomb(Chrono timer) {
+	public static void addAFlaggedBomb(Chrono timer, JFrame currentWindow, JFrame menuWindow) {
 		setNumberOfBombsFlagged(getNumberOfBombsFlagged() + 1);
-		checkVictory(timer);
+		checkVictory(timer, currentWindow, menuWindow);
 	}
 
 	public static void removeAFlaggedBomb() {
 		setNumberOfBombsFlagged(getNumberOfBombsFlagged() - 1);
 	}
 
-	private static void checkVictory(Chrono timer) {
+	private static void checkVictory(Chrono timer, JFrame currentWindow, JFrame menuWindow) {
 		if (getNumberOfBombsFlagged() >= getTotalOfBombs()) {
-			endTheGame.victory(timer);
+			endTheGame.victory(timer, currentWindow, menuWindow);
 		}
 	}
 }
