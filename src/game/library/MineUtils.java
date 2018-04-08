@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import game.demineur.items.Case;
 
 public class MineUtils {
-	private static Case[][] casesList = new Case[9][9];
+	private static Case[][] casesList;
 
 	public static void casePositionArray(Case caseToAdd) {
 		Case[][] PlaceCase = getCaseList();
@@ -68,11 +68,12 @@ public class MineUtils {
 		return isBomb;
 	}
 
-	public static int giveNeighbourNumber(Coordonnees[] arrayCoor, ArrayList<Coordonnees> arrayCases) {
+	public static int giveNeighbourNumber(Coordonnees[] arrayCoor, ArrayList<Coordonnees> arrayCases, int xMax,
+			int yMax) {
 		int numberOfNeighboor = 0;
 
 		for (int i = 0; i < arrayCoor.length; i++) {
-			if (!isOutOfBound(arrayCoor[i])) {
+			if (!isOutOfBound(arrayCoor[i], xMax, yMax)) {
 				if (isABomb(arrayCoor[i].getOrdonnees(), arrayCoor[i].getAbscisse(), arrayCases)) {
 					numberOfNeighboor++;
 				}
@@ -82,12 +83,12 @@ public class MineUtils {
 		return numberOfNeighboor;
 	}
 
-	public static void revealEmptyCaseAdjacent(Coordonnees position) {
+	public static void revealEmptyCaseAdjacent(Coordonnees position, int xMax, int yMax) {
 		Case[][] listeDesCases = getCaseList();
 		Coordonnees[] neighboor = generateCoordonneesVoisines(position.getAbscisse(), position.getOrdonnees());
 
 		for (int i = 0; i < neighboor.length; i++) {
-			if (!isOutOfBound(neighboor[i])) {
+			if (!isOutOfBound(neighboor[i], xMax, yMax)) {
 				if ((listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()].getState() == Case.SAFE)
 						&& !(listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()].isDiscovered())) {
 
@@ -99,18 +100,44 @@ public class MineUtils {
 					if (listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()]
 							.getNumberOfExplosiveNeighboor() == 0) {
 						revealEmptyCaseAdjacent(
-								listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()].getPosition());
+								listeDesCases[neighboor[i].getAbscisse()][neighboor[i].getOrdonnees()].getPosition(),
+								xMax, yMax);
 					}
 				}
 			}
 		}
 	}
 
-	public static boolean isOutOfBound(Coordonnees coor) {
-		if (coor.isNegative() || coor.getAbscisse() >= 9 || coor.getOrdonnees() >= 9) {
+	public static boolean isOutOfBound(Coordonnees coor, int xMax, int yMax) {
+		if (coor.isNegative() || coor.getAbscisse() >= xMax || coor.getOrdonnees() >= yMax) {
 			return true;
 		}
 
 		return false;
+	}
+
+	public static void initialize(int size) {
+		int xMax, yMax;
+
+		switch (size) {
+		case 9:
+			xMax = 9;
+			yMax = 9;
+			break;
+		case 16:
+			xMax = 16;
+			yMax = 16;
+			break;
+		case 30:
+			xMax = 30;
+			yMax = 16;
+			break;
+		default:
+			xMax = 9;
+			yMax = 9;
+			break;
+		}
+
+		casesList = new Case[xMax][yMax];
 	}
 }

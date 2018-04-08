@@ -107,7 +107,7 @@ public class Popup {
 	}
 
 	public static void errorSettingPopup(String errorMessage) {
-		JOptionPane.showMessageDialog(null, "Erreur de mise à jour des paramètres", errorMessage,
+		JOptionPane.showMessageDialog(null, errorMessage, "Erreur de mise à jour des paramètres",
 				JOptionPane.ERROR_MESSAGE);
 	}
 

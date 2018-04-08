@@ -316,7 +316,6 @@ public class MainMenuWindow {
 			if (confirmed) {
 				File[] listOfFiles = new File(Path.PROFIL_PATH).listFiles();
 				int numberOfFiles = listOfFiles.length;
-				// String[] listOfProfileName = new String[numberOfFiles - 1];
 
 				ArrayList<String> listOfProfileName = new ArrayList<String>();
 

@@ -81,7 +81,7 @@ public class GameWindow {
 		this.size = size;
 		this.menuFrame = menuFrame;
 		endTheGame.initialize(settings, profilName);
-		DetectVictory.initialize(10);
+		MineUtils.initialize(size);
 		initialize(size, gridColor);
 	}
 
@@ -200,17 +200,46 @@ public class GameWindow {
 		gridBagLayout1.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
 		gamePane.setLayout(gridBagLayout1);
 
+		int xMax, yMax, numBomb;
+
+		switch (size) {
+		case 9:
+			xMax = 9;
+			yMax = 9;
+			numBomb = 10;
+			break;
+		case 16:
+			xMax = 16;
+			yMax = 16;
+			numBomb = 30;
+			break;
+		case 30:
+			xMax = 30;
+			yMax = 16;
+			numBomb = 60;
+			break;
+		default:
+			xMax = 9;
+			yMax = 9;
+			numBomb = 10;
+			break;
+		}
+
+		DetectVictory.initialize(numBomb);
+
 		Case aX;
 
 		String colorPath = setCasesColorPicturePath();
 
-		ArrayList<Coordonnees> arrayCases = chooseRandomPlaceToBombs(9);
+		ArrayList<Coordonnees> arrayCases = chooseRandomPlaceToBombs(numBomb, xMax, yMax);
 
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
-				int neighboor = MineUtils.giveNeighbourNumber(MineUtils.generateCoordonneesVoisines(i, j), arrayCases);
+		for (int i = 0; i < xMax; i++) {
+			for (int j = 0; j < yMax; j++) {
+				int neighboor = MineUtils.giveNeighbourNumber(MineUtils.generateCoordonneesVoisines(i, j), arrayCases,
+						xMax, yMax);
 
-				aX = new Case(neighboor, new Coordonnees(i, j), arrayCases, timer, colorPath, getFrame(), menuFrame);
+				aX = new Case(neighboor, new Coordonnees(i, j), arrayCases, timer, colorPath, getFrame(), menuFrame,
+						xMax, yMax);
 
 				aX.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				GridBagConstraints cAX = new GridBagConstraints();
@@ -270,23 +299,19 @@ public class GameWindow {
 		}
 	}
 
-	private ArrayList<Coordonnees> chooseRandomPlaceToBombs(int maxSize) {
+	private ArrayList<Coordonnees> chooseRandomPlaceToBombs(int numBomb, int xMax, int yMax) {
 		ArrayList<Coordonnees> arrayOfcoordinates = new ArrayList<>();
 
-		if (maxSize == 9) {
-			int bombToPlace = 10;
+		for (int i = 1; i <= numBomb; i++) {
+			int x = randomBetween(0, xMax - 1);
+			int y = randomBetween(0, yMax - 1);
 
-			for (int i = 1; i <= bombToPlace; i++) {
-				int x = randomBetween(0, 8);
-				int y = randomBetween(0, 8);
+			Coordonnees coor = new Coordonnees(x, y);
 
-				Coordonnees coor = new Coordonnees(x, y);
-
-				if (isAlreadyExistant(arrayOfcoordinates, coor)) {
-					i--;
-				} else {
-					arrayOfcoordinates.add(coor);
-				}
+			if (isAlreadyExistant(arrayOfcoordinates, coor)) {
+				i--;
+			} else {
+				arrayOfcoordinates.add(coor);
 			}
 		}
 

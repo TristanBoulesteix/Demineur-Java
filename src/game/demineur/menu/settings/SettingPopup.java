@@ -62,7 +62,7 @@ public class SettingPopup extends JDialog {
 		profilListBox1 = new JRadioButton("9x9");
 		profilListBox1.setSelected(true);
 		profilListBox2 = new JRadioButton("16x16");
-		profilListBox3 = new JRadioButton("16x32");
+		profilListBox3 = new JRadioButton("30x16");
 		ButtonGroup group = new ButtonGroup();
 		group.add(profilListBox1);
 		group.add(profilListBox2);

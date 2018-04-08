@@ -15,7 +15,7 @@ import game.library.MineUtils;
 @SuppressWarnings("serial")
 public class Case extends CaseItem {
 	public Case(int neighboor, Coordonnees position, ArrayList<Coordonnees> arrayCases, Chrono timer, String colorPath,
-			JFrame currentWindow, JFrame menuWindow) {
+			JFrame currentWindow, JFrame menuWindow, int xMax, int yMax) {
 		super(neighboor, position, arrayCases, colorPath);
 		resize();
 
@@ -45,8 +45,6 @@ public class Case extends CaseItem {
 					}
 
 				} else if (SwingUtilities.isLeftMouseButton(e) && getStatus() == CaseItem.CASE && !isDiscovered()) {
-					System.out.println(getState());
-
 					if (getState() == CaseItem.EXPLOSIVE) {
 						setStatus(CaseItem.BOMB);
 						changeToBomb(true);
@@ -55,7 +53,7 @@ public class Case extends CaseItem {
 						setStatus(CaseItem.NUMBER);
 						changeToNumber(neighboor);
 						if (getNumberOfExplosiveNeighboor() == 0) {
-							MineUtils.revealEmptyCaseAdjacent(getPosition());
+							MineUtils.revealEmptyCaseAdjacent(getPosition(), xMax, yMax);
 						}
 					}
 				}
